@@ -1,16 +1,27 @@
-import { Grid, Divider } from "@chakra-ui/react"
+import { Box, Grid, Divider } from "@chakra-ui/react"
 
 import { LoginForm, RegisterForm } from "./_components"
 
 export function Auth() {
 	return (
-		<div className="auth-forms-container">
-			<h1>Auth</h1>
-			<Grid templateColumns="repeat(3, 1fr)" justifyItems="center">
+		<Box
+			className="auth-forms-container"
+			h="90%"
+			display="flex"
+			justifyContent="center"
+			alignItems="center"
+		>
+			<Grid
+				w="1280px"
+				h="fit-content"
+				templateColumns="1fr 6rem 1fr"
+				justifyItems="center"
+				alignItems="center"
+			>
 				<LoginForm />
-				<Divider orientation="vertical" />
+				<Divider orientation="vertical" h="500px" />
 				<RegisterForm />
 			</Grid>
-		</div>
+		</Box>
 	)
 }

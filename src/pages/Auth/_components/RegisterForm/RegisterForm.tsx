@@ -1,22 +1,22 @@
 import {
+	Box,
 	Text,
+	Alert,
+	AlertIcon,
+	AlertDescription,
 	FormControl,
 	FormLabel,
-	FormHelperText,
 	InputGroup,
 	Input,
 	InputRightElement,
-	IconButton,
-	Button
+	Button,
+	FormErrorMessage,
+	useToast
 } from "@chakra-ui/react"
-import {
-	AiFillEyeInvisible as EyeVisibleIcon,
-	AiFillEye as EyeInvisibleIcon
-} from "react-icons/ai"
 import { useState } from "react"
+import axios from "axios"
 
 import { IRegisterForm, THandleChange } from "../types"
-import axios from "axios"
 
 export function RegisterForm() {
 	const [form, setForm] = useState<IRegisterForm>({
@@ -24,14 +24,28 @@ export function RegisterForm() {
 		password: { isInvalid: undefined, value: "" }
 	})
 	const [isVisible, setIsVisible] = useState<boolean>(false)
-	const [error, setError] = useState<boolean>(false)
+	const [error, setError] = useState<string | null>(null)
 
-	const handleSubmit = async () => {
+	const toast = useToast()
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
 		if (form.username && form.password) {
 			await axios
-				.post("http://fauques.freeboxos.fr:3000/register", { form })
-				.then(() => setError(false))
-				.catch(() => setError(true))
+				.post(`${import.meta.env.VITE_API_URL}/register`, {
+					username: form.username.value,
+					password: form.password.value
+				})
+				.then((res) => {
+					setError(null)
+					toast({
+						status: "success",
+						title: "User created.",
+						description: "You can now login."
+					})
+				})
+				.catch((err) => console.log(err))
 		}
 	}
 
@@ -68,40 +82,77 @@ export function RegisterForm() {
 	}
 
 	return (
-		<div className="login-form-container">
-			<Text fontWeight="bold" fontSize="1.5rem">
+		<Box
+			className="register-form-container"
+			position="relative"
+			w="100%"
+			h="fit-content"
+			p="4rem 6rem"
+		>
+			{error && (
+				<Alert
+					status="error"
+					position="absolute"
+					w="fit-content"
+					top="0"
+					left="50%"
+					transform="translateX(-50%)"
+				>
+					<AlertIcon />
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
+			)}
+			<Text fontWeight="bold" fontSize="1.5rem" w="fit-content" m="0 auto">
 				Register
 			</Text>
-			<FormControl isRequired mt="3rem" isInvalid={form.username.isInvalid}>
-				<FormLabel>Username</FormLabel>
-				<Input
-					onChange={(e) => handleChange("username", e.target.value)}
-					type="text"
-				/>
-			</FormControl>
-			<FormControl isRequired mt="1.5rem" isInvalid={form.password.isInvalid}>
-				<FormLabel>Password</FormLabel>
-				<InputGroup>
+			<form onSubmit={(e) => handleSubmit(e)}>
+				<FormControl isRequired mt="2rem" isInvalid={form.username.isInvalid}>
+					<FormLabel>Username</FormLabel>
 					<Input
-						onChange={(e) => handleChange("password", e.target.value)}
-						type={isVisible ? "text" : "password"}
+						onChange={(e) => handleChange("username", e.target.value)}
+						type="text"
 					/>
-					<InputRightElement>
-						<IconButton
-							aria-label="show password"
-							onClick={() => setIsVisible(!isVisible)}
-							icon={isVisible ? <EyeVisibleIcon /> : <EyeInvisibleIcon />}
+					{form.username.isInvalid && (
+						<FormErrorMessage>Username is incorrect.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired mt="1.5rem" isInvalid={form.password.isInvalid}>
+					<FormLabel>Password</FormLabel>
+					<InputGroup>
+						<Input
+							onChange={(e) => handleChange("password", e.target.value)}
+							type={isVisible ? "text" : "password"}
+							pr="4rem"
 						/>
-					</InputRightElement>
-				</InputGroup>
-			</FormControl>
-			<Button
-				disabled={!getFormValidity()}
-				onClick={() => handleSubmit()}
-				mt="2rem"
-			>
-				Register
-			</Button>
-		</div>
+						<InputRightElement w="4.5rem">
+							<Button
+								h="1.75rem"
+								w="60px"
+								fontSize="0.9rem"
+								size="md"
+								variant="ghost"
+								colorScheme="linkedin"
+								onClick={() => setIsVisible(!isVisible)}
+							>
+								{isVisible ? "Hide" : "Show"}
+							</Button>
+						</InputRightElement>
+					</InputGroup>
+					{form.password.isInvalid && (
+						<FormErrorMessage>Password is incorrect.</FormErrorMessage>
+					)}
+				</FormControl>
+				<Button
+					disabled={!getFormValidity()}
+					type="submit"
+					colorScheme="linkedin"
+					display="block"
+					p="0 1.5rem"
+					m="2rem auto 0"
+				>
+					Register
+				</Button>
+			</form>
+		</Box>
 	)
 }
