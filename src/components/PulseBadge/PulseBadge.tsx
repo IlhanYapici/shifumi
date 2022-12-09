@@ -1,15 +1,15 @@
 import { Box } from "@chakra-ui/react"
 
-import { IPulseBadgeProps } from "./PulseBadge-types"
+import { EChakraColor, IPulseBadgeProps } from "./PulseBadge-types"
 
 import "./PulseBadge-styles.css"
 
 export function PulseBadge(props: IPulseBadgeProps) {
-	const { status } = props
+	const { color } = props
 
 	return (
 		<Box
-			backgroundColor={status === "close" ? "tomato" : "whatsapp.500"}
+			backgroundColor={color}
 			className="pulse-badge"
 			display="inline-block"
 			position="relative"
@@ -25,7 +25,9 @@ export function PulseBadge(props: IPulseBadgeProps) {
 				animation: "pulse 1s ease infinite",
 				borderRadius: "50%",
 				border: `4px double ${
-					status === "close" ? "tomato" : "var(--chakra-colors-whatsapp-500)"
+					color === EChakraColor.RED
+						? "tomato"
+						: "var(--chakra-colors-whatsapp-500)"
 				}`
 			}}
 			h="1rem"

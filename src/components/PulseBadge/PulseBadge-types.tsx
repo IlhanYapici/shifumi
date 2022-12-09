@@ -1,3 +1,8 @@
 export interface IPulseBadgeProps {
-	status: "open" | "close"
+	color: EChakraColor
+}
+
+export enum EChakraColor {
+	RED = "tomato",
+	WHATSAPP = "whatsapp.500"
 }
