@@ -1,6 +1,7 @@
-import { Grid } from "@chakra-ui/react"
-import axios from "axios"
+import { Divider, Grid } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
+import axios from "axios"
+
 import { IMatch } from "../../components"
 import { MatchCard } from "../../components/MatchCard/MatchCard"
 
@@ -50,9 +51,18 @@ export function Matches() {
 			m="0 auto"
 			gap="2rem"
 		>
-			{matches.map((match) => (
-				<MatchCard match={match} />
-			))}
+			{matches.map((match, i, arr) => {
+				if (i < arr.length - 1) {
+					return (
+						<>
+							<MatchCard match={match} />
+							<Divider />
+						</>
+					)
+				} else {
+					return <MatchCard match={match} />
+				}
+			})}
 		</Grid>
 	)
 }
