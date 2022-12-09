@@ -2,10 +2,9 @@ import { Divider, Grid } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-import { IMatch } from "../../components"
-import { MatchCard } from "../../components/MatchCard/MatchCard"
+import { IMatch, MatchCard, NewMatch } from "../../components"
 
-export function Matches() {
+export function MatchList() {
 	const [matches, setMatches] = useState<IMatch[]>([
 		{
 			_id: "9803",
@@ -45,25 +44,28 @@ export function Matches() {
 	// }, [])
 
 	return (
-		<Grid
-			className="matches-list-container"
-			w="fit-content"
-			m="0 auto"
-			pt="75px"
-			gap="2rem"
-		>
-			{matches.map((match, i, arr) => {
-				if (i < arr.length - 1) {
-					return (
-						<>
-							<MatchCard match={match} />
-							<Divider />
-						</>
-					)
-				} else {
-					return <MatchCard match={match} />
-				}
-			})}
-		</Grid>
+		<>
+			<NewMatch />
+			<Grid
+				className="match-list-container"
+				w="fit-content"
+				m="0 auto"
+				pt="75px"
+				gap="2rem"
+			>
+				{matches.map((match, i, arr) => {
+					if (i < arr.length - 1) {
+						return (
+							<>
+								<MatchCard match={match} />
+								<Divider />
+							</>
+						)
+					} else {
+						return <MatchCard match={match} />
+					}
+				})}
+			</Grid>
+		</>
 	)
 }

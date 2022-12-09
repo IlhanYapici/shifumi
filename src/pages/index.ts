@@ -1,2 +1,3 @@
 export { Auth } from "./Auth/Auth"
-export { Matches } from "./Matches/Matches"
+export { MatchList } from "./MatchList/MatchList"
+export { Match } from "./Match/Match"
