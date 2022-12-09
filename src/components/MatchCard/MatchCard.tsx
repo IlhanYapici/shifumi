@@ -7,14 +7,14 @@ import {
 	CardHeader,
 	CardBody,
 	CardFooter,
-	Badge
+	Badge,
+	Spinner
 } from "@chakra-ui/react"
 
 import imgUrl from "../../assets/versus-icon.svg"
 import { EChakraColor } from "../PulseBadge/PulseBadge-types"
 import { PulseBadge } from "../PulseBadge/PulseBadge"
 import { IMatchCardProps } from "./MatchCard-types"
-import { Loader } from "../Loader/Loader"
 
 import "./MatchCard-styles.css"
 
@@ -65,7 +65,6 @@ export function MatchCard(props: IMatchCardProps) {
 					transform="translate(-50%, -50%)"
 					top="50%"
 					left="50%"
-					opacity="0.3"
 					userSelect="none"
 					draggable="false"
 				/>
@@ -80,7 +79,7 @@ export function MatchCard(props: IMatchCardProps) {
 							{match.user1.username}
 						</Text>
 					) : (
-						<Loader />
+						<Spinner />
 					)}
 					<Text
 						className="vs-text"
@@ -98,7 +97,7 @@ export function MatchCard(props: IMatchCardProps) {
 							{match.user2.username}
 						</Text>
 					) : (
-						<Loader />
+						<Spinner size="lg" thickness="0.2rem" speed="0.6s" />
 					)}
 				</Grid>
 			</CardBody>

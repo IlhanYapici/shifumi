@@ -49,6 +49,7 @@ export function Matches() {
 			className="matches-list-container"
 			w="fit-content"
 			m="0 auto"
+			pt="75px"
 			gap="2rem"
 		>
 			{matches.map((match, i, arr) => {

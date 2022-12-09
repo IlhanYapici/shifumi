@@ -6,6 +6,7 @@ export function Auth() {
 	return (
 		<Box
 			className="auth-forms-container"
+			mt="55px"
 			h="90%"
 			display="flex"
 			justifyContent="center"

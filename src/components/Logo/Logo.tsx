@@ -10,6 +10,7 @@ export function Logo() {
 			display="flex"
 			gap="0.2rem"
 			alignItems="center"
+			pl="0.75rem"
 		>
 			<Text fontFamily="Anton" fontSize="4xl">
 				SHIFUMI
