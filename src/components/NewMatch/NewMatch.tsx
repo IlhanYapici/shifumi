@@ -8,9 +8,24 @@ import {
 	ModalFooter,
 	useDisclosure
 } from "@chakra-ui/react"
+import axios from "axios"
 
 export function NewMatch() {
 	const { isOpen, onOpen, onClose } = useDisclosure()
+
+	const requestNewMatch = async () => {
+		const token = localStorage.getItem("token")
+		if (token === null) return
+
+		await axios
+			.post(`${import.meta.env.VITE_API_URL}/matches`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
+			.then((res) => console.log(res.data))
+			.catch((err) => console.error(err))
+	}
 
 	return (
 		<>

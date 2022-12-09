@@ -1,11 +1,27 @@
+import axios from "axios"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 
-interface Props {}
-
-export function Match(props: Props) {
+export function Match() {
 	const { matchId } = useParams()
 
-	const {} = props
+	useEffect(() => {
+		const getMatch = async () => {
+			const token = localStorage.getItem("token")
+			if (token === null) return
+
+			await axios
+				.get(`${import.meta.env.VITE_API_URL}/matches/${matchId}`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+				.then((res) => console.log(res.data))
+				.catch((err) => console.error(err))
+		}
+
+		getMatch()
+	}, [])
 
 	return <h1>Match {matchId} </h1>
 }

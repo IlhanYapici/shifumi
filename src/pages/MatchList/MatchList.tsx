@@ -1,68 +1,56 @@
 import { Divider, Grid } from "@chakra-ui/react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
 
 import { IMatch, MatchCard, NewMatch } from "../../components"
 
 export function MatchList() {
-	const [matches, setMatches] = useState<IMatch[]>([
-		{
-			_id: "9803",
-			user1: { _id: "1", username: "barney" },
-			user2: null,
-			turns: []
-		},
-		{
-			_id: "2879",
-			user1: {
-				_id: "23",
-				username: "Firazer"
-			},
-			user2: {
-				_id: "26",
-				username: "Balbu98"
-			},
-			turns: []
+	const [matchList, setMatchList] = useState<IMatch[]>([])
+
+	useEffect(() => {
+		const token = localStorage.getItem("token")
+
+		const getMatchList = async () => {
+			await axios
+				.get(`${import.meta.env.VITE_API_URL}/matches`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+				.then((res) => {
+					setMatchList(res.data)
+					console.log(res.data)
+				})
+				.catch((err) => console.error(err))
 		}
-	])
 
-	// useEffect(() => {
-	// 	const token = localStorage.getItem("token")
+		getMatchList()
 
-	// 	const getMaches = async () => {
-	// 		await axios
-	// 			.get(`${import.meta.env.VITE_API_URL}/matches`, {
-	// 				headers: {
-	// 					Authorization: `Bearer ${token}`
-	// 				}
-	// 			})
-	// 			.then((res) => setMatches(res.data))
-	// 			.catch((err) => console.error(err))
-	// 	}
-
-	// 	getMaches()
-	// }, [])
+		const id = setInterval(() => getMatchList(), 10000)
+		return () => clearInterval(id)
+	}, [])
 
 	return (
 		<>
-			<NewMatch />
+			<NewMatch key="new-match-button" />
 			<Grid
+				key="match-list"
 				className="match-list-container"
 				w="fit-content"
 				m="0 auto"
 				pt="75px"
 				gap="2rem"
 			>
-				{matches.map((match, i, arr) => {
+				{matchList.map((match, i, arr) => {
 					if (i < arr.length - 1) {
 						return (
-							<>
-								<MatchCard match={match} />
-								<Divider />
-							</>
+							<React.Fragment key={i + "-fragment"}>
+								<MatchCard key={match._id} match={match} />
+								<Divider key={i + "-divider"} />
+							</React.Fragment>
 						)
 					} else {
-						return <MatchCard match={match} />
+						return <MatchCard key={match._id} match={match} />
 					}
 				})}
 			</Grid>
