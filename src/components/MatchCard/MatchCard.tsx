@@ -59,6 +59,7 @@ export function MatchCard(props: IMatchCardProps) {
 			<CardBody display="flex" alignItems="center" position="relative">
 				<Image
 					src={imgUrl}
+					zIndex={-1}
 					w="16rem"
 					position="absolute"
 					transform="translate(-50%, -50%)"
@@ -82,6 +83,8 @@ export function MatchCard(props: IMatchCardProps) {
 						<Loader />
 					)}
 					<Text
+						className="vs-text"
+						color="black"
 						userSelect="none"
 						fontSize="2rem"
 						letterSpacing="1"
