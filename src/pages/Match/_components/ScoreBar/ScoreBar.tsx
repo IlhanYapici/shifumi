@@ -2,6 +2,7 @@ import { Grid, Text } from "@chakra-ui/react"
 import { useContext } from "react"
 
 import { MatchContext } from "../../../../context/MatchContext/MatchContext"
+import { Username } from "../../../../components"
 
 export function ScoreBar() {
 	const {
@@ -16,9 +17,9 @@ export function ScoreBar() {
 			justifyItems="center"
 			alignItems="center"
 		>
-			<Text fontWeight="bold" fontSize="1.2rem">
+			<Username player={1} fontSize="1.2rem">
 				{players[0].username}
-			</Text>
+			</Username>
 			<Grid
 				templateColumns="repeat(3, 1fr)"
 				w="6rem"
@@ -37,9 +38,9 @@ export function ScoreBar() {
 				<Text userSelect="none">-</Text>
 				<Text userSelect="none">{players[1].score}</Text>
 			</Grid>
-			<Text fontWeight="bold" fontSize="1.2rem">
+			<Username player={2} fontSize="1.2rem">
 				{players[1].username}
-			</Text>
+			</Username>
 		</Grid>
 	)
 }

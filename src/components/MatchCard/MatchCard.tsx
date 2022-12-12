@@ -1,20 +1,22 @@
 import {
-	Image,
-	Text,
+	Badge,
 	Button,
-	Grid,
 	Card,
-	CardHeader,
 	CardBody,
 	CardFooter,
-	Badge,
-	Spinner
+	CardHeader,
+	Grid,
+	Image,
+	Spinner,
+	Text
 } from "@chakra-ui/react"
 
-import imgUrl from "../../assets/versus-icon.svg"
 import { EChakraColor } from "../PulseBadge/PulseBadge-types"
-import { PulseBadge } from "../PulseBadge/PulseBadge"
 import { IMatchCardProps } from "./MatchCard-types"
+import { PulseBadge } from "../PulseBadge/PulseBadge"
+import { Username } from "../Username/Username"
+
+import imgUrl from "../../assets/versus-icon.svg"
 
 import "./MatchCard-styles.css"
 
@@ -75,9 +77,7 @@ export function MatchCard(props: IMatchCardProps) {
 					w="100%"
 				>
 					{match.user1 ? (
-						<Text className="user1 username" color="white" userSelect="none">
-							{match.user1.username}
-						</Text>
+						<Username player={1}>{match.user1.username}</Username>
 					) : (
 						<Spinner />
 					)}
@@ -93,9 +93,7 @@ export function MatchCard(props: IMatchCardProps) {
 						VS
 					</Text>
 					{match.user2 ? (
-						<Text className="user2 username" color="white" userSelect="none">
-							{match.user2.username}
-						</Text>
+						<Username player={2}>{match.user2.username}</Username>
 					) : (
 						<Spinner size="lg" thickness="0.2rem" speed="0.6s" />
 					)}
