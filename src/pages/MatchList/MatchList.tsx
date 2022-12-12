@@ -1,5 +1,6 @@
-import { Divider, Grid } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
+import { Divider, Grid } from "@chakra-ui/react"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 import { IMatch, MatchCard, NewMatch } from "../../components"
@@ -7,8 +8,15 @@ import { IMatch, MatchCard, NewMatch } from "../../components"
 export function MatchList() {
 	const [matchList, setMatchList] = useState<IMatch[]>([])
 
+	const navigate = useNavigate()
+
 	useEffect(() => {
 		const token = localStorage.getItem("token")
+
+		if (token === null) {
+			navigate("auth")
+			return
+		}
 
 		const getMatchList = async () => {
 			await axios
@@ -27,7 +35,11 @@ export function MatchList() {
 		getMatchList()
 
 		const id = setInterval(() => getMatchList(), 10000)
-		return () => clearInterval(id)
+		return () => {
+			const controller = new AbortController()
+			controller.abort()
+			clearInterval(id)
+		}
 	}, [])
 
 	return (

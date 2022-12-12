@@ -40,7 +40,7 @@ export function NewMatch() {
 						<Text>You want to create a new match ?</Text>
 					</ModalHeader>
 					<ModalFooter display="flex" gap="1rem">
-						<Button colorScheme="linkedin" ml="auto">
+						<Button colorScheme="linkedin" ml="auto" onClick={requestNewMatch}>
 							Yes
 						</Button>
 						<Button

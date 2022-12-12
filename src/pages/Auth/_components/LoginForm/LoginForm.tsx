@@ -39,7 +39,10 @@ export function LoginForm() {
 				.then((res) => {
 					setError(false)
 					localStorage.setItem("token", res.data.token)
-					navigate("/matches")
+					const t = setTimeout(() => {
+						navigate("/matches")
+						return () => clearTimeout(t)
+					}, 1000)
 				})
 				.catch(() => setError(true))
 		}
