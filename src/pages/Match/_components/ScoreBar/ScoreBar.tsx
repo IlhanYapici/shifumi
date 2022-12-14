@@ -12,7 +12,8 @@ export function ScoreBar() {
 	return (
 		<Grid
 			w="100%"
-			borderBottom="0.2rem solid #3182ce"
+			borderBottom="0.2rem solid"
+			borderColor="linkedin.500"
 			templateColumns="1fr auto 1fr"
 			justifyItems="center"
 			alignItems="center"
@@ -29,7 +30,7 @@ export function ScoreBar() {
 				flexDir="row"
 				justifyContent="space-evenly"
 				alignItems="center"
-				backgroundColor="#3182ce"
+				backgroundColor="linkedin.500"
 				color="#fff"
 				fontSize="1.5rem"
 				fontWeight="bold"

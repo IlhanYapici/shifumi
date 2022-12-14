@@ -19,16 +19,24 @@ import { Username } from "../Username/Username"
 import imgUrl from "../../assets/versus-icon.svg"
 
 import "./MatchCard-styles.css"
+import { useNavigate } from "react-router-dom"
 
 export function MatchCard(props: IMatchCardProps) {
 	const { match } = props
+	const navigate = useNavigate()
 
-	const getMatchStatus = (): "ongoing" | "open" => {
+	const getMatchStatus = (): "open" | "ongoing" | "finished" => {
 		if (match.user1 && match.user2) {
+			if (match.turns.length >= 4) return "finished"
+
 			return "ongoing"
 		} else {
 			return "open"
 		}
+	}
+
+	const joinMatch = () => {
+		navigate(`/matches/${match._id}`)
 	}
 
 	const capitalize = (str: string) => {
@@ -101,12 +109,13 @@ export function MatchCard(props: IMatchCardProps) {
 			</CardBody>
 			<CardFooter>
 				<Button
-					disabled={getMatchStatus() === "ongoing" ? true : false}
+					disabled={getMatchStatus() === "finished" ? true : false}
 					ml="auto"
 					colorScheme="linkedin"
 					variant="ghost"
+					onClick={joinMatch}
 				>
-					Join Match
+					Play
 				</Button>
 			</CardFooter>
 		</Card>

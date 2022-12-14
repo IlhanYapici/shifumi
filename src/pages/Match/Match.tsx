@@ -5,9 +5,10 @@ import axios from "axios"
 
 import { useMatchContext } from "../../context/MatchContext/MatchContext"
 import { ScoreBar } from "./_components/ScoreBar/ScoreBar"
+import { Controls } from "./_components/Controls/Controls"
 
 export function Match() {
-	// const [token, setToken] = useState<string | null>(null)
+	const [token, setToken] = useState<string | null>(null)
 	const [eventSource, setEventSource] = useState<EventSourcePolyfill>()
 
 	const { matchId } = useParams()
@@ -17,8 +18,9 @@ export function Match() {
 
 	useEffect(() => {
 		const getMatch = async () => {
-			const token = localStorage.getItem("token")
-			if (token === null) {
+			const localToken = localStorage.getItem("token")
+
+			if (localToken === null) {
 				console.info("Token is null")
 				return
 			}
@@ -26,10 +28,11 @@ export function Match() {
 			await axios
 				.get(`${import.meta.env.VITE_API_URL}/matches/${matchId}`, {
 					headers: {
-						Authorization: `Bearer ${token}`
+						Authorization: `Bearer ${localToken}`
 					}
 				})
 				.then(({ data }) => {
+					setToken(localToken)
 					setMatchContext({
 						...matchContext,
 						players: {
@@ -49,7 +52,7 @@ export function Match() {
 
 	// 	const sse = new EventSourcePolyfill(
 	// 		`${import.meta.env.VITE_API_URL}/matches/${matchId}/subscribe`,
-	// 		{ headers: { Authorization: `Bearer ${token}` }, heartbeatTimeout: 30000 }
+	// 		{ headers: { Authorization: `Bearer ${token}` } }
 	// 	)
 
 	// 	sse.onmessage = (event) => {
@@ -68,8 +71,11 @@ export function Match() {
 	// 			case "TURN_ENDED":
 	// 				console.info("Turn ended.")
 	// 				break
-	// 			case "PLAYER_MOVED":
-	// 				console.info("Player moved.")
+	// 			case "PLAYER1_MOVED":
+	// 				console.info("Player 1 moved.")
+	// 				break
+	// 			case "PLAYER1_MOVED":
+	// 				console.info("Player 1 moved.")
 	// 				break
 	// 			case "MATCH_ENDED":
 	// 				console.info("Match ended.")
@@ -83,5 +89,10 @@ export function Match() {
 	// 	}
 	// }, [token])
 
-	return <ScoreBar />
+	return (
+		<>
+			<ScoreBar />
+			<Controls />
+		</>
+	)
 }
