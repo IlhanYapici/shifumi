@@ -14,9 +14,9 @@ import {
 	useToast
 } from "@chakra-ui/react"
 import { useState } from "react"
-import axios from "axios"
 
 import { IRegisterForm, THandleChange } from "../types"
+import { registerUser } from "../../../../api/utils"
 
 export function RegisterForm() {
 	const [form, setForm] = useState<IRegisterForm>({
@@ -32,20 +32,20 @@ export function RegisterForm() {
 		e.preventDefault()
 
 		if (form.username && form.password) {
-			await axios
-				.post(`${import.meta.env.VITE_API_URL}/register`, {
-					username: form.username.value,
-					password: form.password.value
+			const resCallback = (data: any) => {
+				setError(null)
+				toast({
+					status: "success",
+					title: "User created.",
+					description: "You can now login."
 				})
-				.then((res) => {
-					setError(null)
-					toast({
-						status: "success",
-						title: "User created.",
-						description: "You can now login."
-					})
-				})
-				.catch((err) => console.log(err))
+			}
+
+			await registerUser({
+				username: form.username.value,
+				password: form.password.value,
+				resCallback
+			})
 		}
 	}
 

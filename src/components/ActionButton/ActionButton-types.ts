@@ -5,4 +5,5 @@ export interface IActionCardProps {
 	icon: React.ReactElement
 	onClick: () => void
 	variant?: "ghost" | "solid" | "outline"
+	disabled?: boolean
 }

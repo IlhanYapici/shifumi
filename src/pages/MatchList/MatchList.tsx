@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { Divider, Grid } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
 
 import { IMatch, MatchCard, NewMatch } from "../../components"
+import { getMatchList } from "../../api/utils"
 
 export function MatchList() {
 	const [matchList, setMatchList] = useState<IMatch[]>([])
@@ -18,23 +18,13 @@ export function MatchList() {
 			return
 		}
 
-		const getMatchList = async () => {
-			await axios
-				.get(`${import.meta.env.VITE_API_URL}/matches`, {
-					headers: {
-						Authorization: `Bearer ${token}`
-					}
-				})
-				.then((res) => {
-					setMatchList(res.data)
-					console.log(res.data)
-				})
-				.catch((err) => console.error(err))
+		const fetchMatchList = async () => {
+			await getMatchList({ token, resCallback: (data) => setMatchList(data) })
 		}
 
-		getMatchList()
+		fetchMatchList()
 
-		const id = setInterval(() => getMatchList(), 10000)
+		const id = setInterval(() => fetchMatchList(), 10000)
 		return () => {
 			const controller = new AbortController()
 			controller.abort()

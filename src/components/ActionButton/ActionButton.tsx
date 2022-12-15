@@ -9,10 +9,11 @@ export function ActionButton(props: IActionCardProps) {
 		ariaLabel,
 		onClick,
 		variant = "solid",
-		icon
+		icon,
+		disabled = false
 	} = props
 
-	if (hasTooltip) {
+	if (hasTooltip && disabled === false) {
 		return (
 			<Tooltip label={tooltipLabel ? tooltipLabel : ariaLabel}>
 				<IconButton
@@ -39,6 +40,7 @@ export function ActionButton(props: IActionCardProps) {
 			height="fit-content"
 			padding="2rem"
 			fontSize="2.2rem"
+			disabled={disabled}
 		/>
 	)
 }

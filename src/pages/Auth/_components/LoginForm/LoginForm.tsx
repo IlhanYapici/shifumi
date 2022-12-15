@@ -13,9 +13,9 @@ import {
 } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from "axios"
 
 import { ILoginForm } from "../types"
+import { loginUser } from "../../../../api/utils"
 
 export function LoginForm() {
 	const [form, setForm] = useState<ILoginForm>({
@@ -31,20 +31,25 @@ export function LoginForm() {
 		e.preventDefault()
 
 		if (form.username && form.password) {
-			await axios
-				.post(`${import.meta.env.VITE_API_URL}/login`, {
-					username: form.username,
-					password: form.password
-				})
-				.then((res) => {
-					setError(false)
-					localStorage.setItem("token", res.data.token)
-					const t = setTimeout(() => {
-						navigate("/matches")
-						return () => clearTimeout(t)
-					}, 1000)
-				})
-				.catch(() => setError(true))
+			const resCallback = (data: any) => {
+				setError(false)
+				localStorage.setItem("token", data.token)
+				const t = setTimeout(() => {
+					navigate("/matches")
+					return () => clearTimeout(t)
+				}, 1000)
+			}
+
+			const errCallback = (err: any) => {
+				setError(true)
+			}
+
+			await loginUser({
+				username: form.username,
+				password: form.password,
+				resCallback,
+				errCallback
+			})
 		}
 	}
 

@@ -1,11 +1,11 @@
 import { EventSourcePolyfill } from "event-source-polyfill"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from "axios"
 
 import { useMatchContext } from "../../context/MatchContext/MatchContext"
 import { ScoreBar } from "./_components/ScoreBar/ScoreBar"
 import { Controls } from "./_components/Controls/Controls"
+import { getMatch } from "../../api/utils"
 
 export function Match() {
 	const [token, setToken] = useState<string | null>(null)
@@ -17,7 +17,11 @@ export function Match() {
 	// ["PLAYER_JOIN", "NEW_TURN", "TURN_ENDED", "PLAYER_MOVED", "MATCH_ENDED"]
 
 	useEffect(() => {
-		const getMatch = async () => {
+		const fetchMatch = async () => {
+			if (!matchId) {
+				return
+			}
+
 			const localToken = localStorage.getItem("token")
 
 			if (localToken === null) {
@@ -25,26 +29,21 @@ export function Match() {
 				return
 			}
 
-			await axios
-				.get(`${import.meta.env.VITE_API_URL}/matches/${matchId}`, {
-					headers: {
-						Authorization: `Bearer ${localToken}`
+			const resCallback = (data: any) => {
+				setToken(localToken)
+				setMatchContext({
+					...matchContext,
+					players: {
+						"0": { score: 0, username: data.user1.username },
+						"1": { score: 0, username: data.user2.username }
 					}
 				})
-				.then(({ data }) => {
-					setToken(localToken)
-					setMatchContext({
-						...matchContext,
-						players: {
-							"0": { score: 0, username: data.user1.username },
-							"1": { score: 0, username: data.user2.username }
-						}
-					})
-				})
-				.catch((err) => console.error(err))
+			}
+
+			await getMatch({ matchId: matchId, token: localToken, resCallback })
 		}
 
-		getMatch()
+		fetchMatch()
 	}, [])
 
 	// useEffect(() => {

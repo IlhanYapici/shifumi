@@ -7,7 +7,7 @@ import {
 
 import { ActionButton } from "../../../../components/ActionButton/ActionButton"
 
-export function Controls() {
+export function Controls({ disabled = false }: { disabled?: boolean }) {
 	return (
 		<Grid
 			templateColumns="1fr auto 1fr auto 1fr"
@@ -21,7 +21,7 @@ export function Controls() {
 			borderTop="0.2rem solid"
 			borderRight="0.2rem solid"
 			borderBottom="0"
-			borderColor="linkedin.500"
+			borderColor={disabled ? "linkedin.100" : "linkedin.500"}
 			borderRadius="1rem 1rem 0 0"
 		>
 			<ActionButton
@@ -33,6 +33,7 @@ export function Controls() {
 					console.log("rock")
 				}}
 				variant="ghost"
+				disabled={disabled}
 			/>
 			<Divider orientation="vertical" />
 			<ActionButton
@@ -44,6 +45,7 @@ export function Controls() {
 					console.log("paper")
 				}}
 				variant="ghost"
+				disabled={disabled}
 			/>
 			<Divider orientation="vertical" />
 			<ActionButton
@@ -55,6 +57,7 @@ export function Controls() {
 					console.log("scissors")
 				}}
 				variant="ghost"
+				disabled={disabled}
 			/>
 		</Grid>
 	)
