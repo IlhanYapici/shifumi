@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { Divider, Grid } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 
-import { IMatch, MatchCard, NewMatch } from "../../components"
-import { getMatchList } from "../../api/utils"
+import { Header, IMatch, MatchCard, NewMatch } from "../../components"
+import { getMatchList } from "../../utils/api/api"
 
 export function MatchList() {
 	const [matchList, setMatchList] = useState<IMatch[]>([])
@@ -14,12 +14,18 @@ export function MatchList() {
 		const token = localStorage.getItem("token")
 
 		if (token === null) {
-			navigate("auth")
+			navigate("/auth")
 			return
 		}
 
 		const fetchMatchList = async () => {
-			await getMatchList({ token, resCallback: (data) => setMatchList(data) })
+			await getMatchList({
+				token,
+				resCallback: (data) => {
+					setMatchList(data)
+					console.log(data)
+				}
+			})
 		}
 
 		fetchMatchList()
@@ -34,6 +40,7 @@ export function MatchList() {
 
 	return (
 		<>
+			<Header />
 			<NewMatch key="new-match-button" />
 			<Grid
 				key="match-list"

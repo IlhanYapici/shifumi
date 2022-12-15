@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom"
 import {
 	Badge,
+	Box,
 	Button,
 	Card,
 	CardBody,
@@ -8,32 +10,25 @@ import {
 	Grid,
 	Image,
 	Spinner,
-	Text
+	Text,
+	Tooltip
 } from "@chakra-ui/react"
 
 import { EChakraColor } from "../PulseBadge/PulseBadge-types"
-import { IMatchCardProps } from "./MatchCard-types"
+import { getMatchStatus, getScores } from "../../utils/misc/misc"
 import { PulseBadge } from "../PulseBadge/PulseBadge"
+import { IMatchCardProps } from "./MatchCard-types"
+import imgUrl from "../../assets/versus-icon.svg"
 import { Username } from "../Username/Username"
 
-import imgUrl from "../../assets/versus-icon.svg"
-
 import "./MatchCard-styles.css"
-import { useNavigate } from "react-router-dom"
 
 export function MatchCard(props: IMatchCardProps) {
 	const { match } = props
 	const navigate = useNavigate()
 
-	const getMatchStatus = (): "open" | "ongoing" | "finished" => {
-		if (match.user1 && match.user2) {
-			if (match.turns.length >= 4) return "finished"
-
-			return "ongoing"
-		} else {
-			return "open"
-		}
-	}
+	const matchStatus = getMatchStatus(match)
+	const scores = getScores(match.turns)
 
 	const joinMatch = () => {
 		navigate(`/matches/${match._id}`)
@@ -53,17 +48,26 @@ export function MatchCard(props: IMatchCardProps) {
 			h="xs"
 		>
 			<CardHeader display="flex" alignItems="center" gap="0.5rem">
-				<PulseBadge
-					color={
-						getMatchStatus() === "open"
-							? EChakraColor.WHATSAPP
-							: EChakraColor.RED
-					}
-				/>
+				{matchStatus !== "finished" && (
+					<PulseBadge
+						color={
+							matchStatus === "ongoing"
+								? EChakraColor.RED
+								: EChakraColor.WHATSAPP
+						}
+					/>
+				)}
 				<Badge
-					colorScheme={getMatchStatus() === "ongoing" ? "red" : "whatsapp"}
+					colorScheme={
+						matchStatus === "finished"
+							? "gray"
+							: matchStatus === "ongoing"
+							? "red"
+							: "whatsapp"
+					}
+					userSelect="none"
 				>
-					{capitalize(getMatchStatus())}
+					{capitalize(getMatchStatus(match))}
 				</Badge>
 			</CardHeader>
 			<CardBody display="flex" alignItems="center" position="relative">
@@ -77,6 +81,7 @@ export function MatchCard(props: IMatchCardProps) {
 					left="50%"
 					userSelect="none"
 					draggable="false"
+					opacity="0.25"
 				/>
 				<Grid
 					templateColumns="repeat(3, 1fr)"
@@ -85,7 +90,29 @@ export function MatchCard(props: IMatchCardProps) {
 					w="100%"
 				>
 					{match.user1 ? (
-						<Username player={1}>{match.user1.username}</Username>
+						<Box
+							display="flex"
+							gap="1.15rem"
+							justifySelf="flex-end"
+							position="relative"
+							_before={{
+								zIndex: -1,
+								content: '""',
+								position: "absolute",
+								top: 0,
+								left: "-0.5rem",
+								width: "calc(100% + 1rem)",
+								height: "100%",
+								transform: "skew(-5deg)",
+								backgroundColor: "whatsapp.500"
+							}}
+							alignItems="center"
+						>
+							<Username player={1}>{match.user1.username}</Username>
+							<Username player={1} fontSize="2.5rem">
+								{scores.user1}
+							</Username>
+						</Box>
 					) : (
 						<Spinner />
 					)}
@@ -101,22 +128,50 @@ export function MatchCard(props: IMatchCardProps) {
 						VS
 					</Text>
 					{match.user2 ? (
-						<Username player={2}>{match.user2.username}</Username>
+						<Box
+							display="flex"
+							gap="1.15rem"
+							justifySelf="flex-start"
+							alignItems="center"
+							position="relative"
+							_before={{
+								zIndex: -1,
+								content: '""',
+								position: "absolute",
+								top: 0,
+								left: "-0.5rem",
+								width: "calc(100% + 1rem)",
+								height: "100%",
+								transform: "skew(-5deg)",
+								backgroundColor: "orange.500"
+							}}
+						>
+							<Username player={2} fontSize="2.5rem">
+								{scores.user1}
+							</Username>
+							<Username player={2}>{match.user2.username}</Username>
+						</Box>
 					) : (
 						<Spinner size="lg" thickness="0.2rem" speed="0.6s" />
 					)}
 				</Grid>
 			</CardBody>
 			<CardFooter>
-				<Button
-					disabled={getMatchStatus() === "finished" ? true : false}
-					ml="auto"
-					colorScheme="linkedin"
-					variant="ghost"
-					onClick={joinMatch}
+				<Tooltip
+					label={
+						matchStatus === "finished" ? "The match is finished." : undefined
+					}
 				>
-					Play
-				</Button>
+					<Button
+						disabled={matchStatus === "finished" ? true : false}
+						ml="auto"
+						colorScheme="linkedin"
+						variant="ghost"
+						onClick={joinMatch}
+					>
+						Play
+					</Button>
+				</Tooltip>
 			</CardFooter>
 		</Card>
 	)

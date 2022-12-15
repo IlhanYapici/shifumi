@@ -25,3 +25,12 @@ export interface IRegisterParams {
 }
 
 export interface ILoginParams extends IRegisterParams {}
+
+export interface IMoveParams {
+	token: string
+	matchId: string
+	turnId: string
+	move: "rock" | "paper" | "scissors"
+	resCallback?: (data: any) => void
+	errCallback?: (error: any) => void
+}

@@ -7,9 +7,11 @@ export interface IMatchProviderProps {
 export interface IMatchContext {
 	matchContext: IMatchState
 	setMatchContext: React.Dispatch<React.SetStateAction<IMatchState>>
+	updateScore: (user: "user1" | "user2") => void
 }
 
 export interface IMatchState {
+	matchId: string | null
 	currentTurn: number
 	players: {
 		0: {

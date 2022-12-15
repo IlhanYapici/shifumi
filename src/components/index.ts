@@ -5,7 +5,7 @@ export type {
 	IMatch,
 	IUser
 } from "./MatchCard/MatchCard-types"
-export { Navbar } from "./Navbar/Navbar"
+export { Header } from "./Header/Header"
 export { PulseBadge } from "./PulseBadge/PulseBadge"
 export type {
 	IPulseBadgeProps,

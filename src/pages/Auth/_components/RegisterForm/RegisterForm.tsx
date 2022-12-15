@@ -16,7 +16,7 @@ import {
 import { useState } from "react"
 
 import { IRegisterForm, THandleChange } from "../types"
-import { registerUser } from "../../../../api/utils"
+import { registerUser } from "../../../../utils/api/api"
 
 export function RegisterForm() {
 	const [form, setForm] = useState<IRegisterForm>({

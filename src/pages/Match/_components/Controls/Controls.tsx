@@ -5,9 +5,57 @@ import {
 	FaHandScissors as ScissorsIcon
 } from "react-icons/fa"
 
+import { move } from "../../../../utils/api/api"
+import { useMatchContext } from "../../../../context/MatchContext/MatchContext"
 import { ActionButton } from "../../../../components/ActionButton/ActionButton"
+import { useParams } from "react-router-dom"
 
 export function Controls({ disabled = false }: { disabled?: boolean }) {
+	const { matchContext } = useMatchContext()
+	const { matchId } = useParams()
+	const { currentTurn } = matchContext
+
+	const onClick = async (action: "rock" | "paper" | "scissors") => {
+		if (!matchId) {
+			console.log("matchId is null")
+			return
+		}
+
+		const token = localStorage.getItem("token")
+
+		if (!token) {
+			console.log("token is null")
+			return
+		}
+
+		switch (action) {
+			case "rock":
+				await move({
+					token,
+					matchId,
+					turnId: currentTurn.toString(),
+					move: "rock"
+				})
+				break
+			case "paper":
+				await move({
+					token,
+					matchId,
+					turnId: currentTurn.toString(),
+					move: "paper"
+				})
+				break
+			case "scissors":
+				await move({
+					token,
+					matchId,
+					turnId: currentTurn.toString(),
+					move: "scissors"
+				})
+				break
+		}
+	}
+
 	return (
 		<Grid
 			templateColumns="1fr auto 1fr auto 1fr"
@@ -30,7 +78,7 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 				ariaLabel="rock button"
 				icon={<RockIcon />}
 				onClick={() => {
-					console.log("rock")
+					onClick("rock")
 				}}
 				variant="ghost"
 				disabled={disabled}
@@ -42,7 +90,7 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 				ariaLabel="paper button"
 				icon={<PaperIcon />}
 				onClick={() => {
-					console.log("paper")
+					onClick("paper")
 				}}
 				variant="ghost"
 				disabled={disabled}
@@ -54,7 +102,7 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 				ariaLabel="scissors button"
 				icon={<ScissorsIcon />}
 				onClick={() => {
-					console.log("scissors")
+					onClick("scissors")
 				}}
 				variant="ghost"
 				disabled={disabled}

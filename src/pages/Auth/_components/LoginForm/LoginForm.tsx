@@ -15,7 +15,9 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 import { ILoginForm } from "../types"
-import { loginUser } from "../../../../api/utils"
+import { loginUser } from "../../../../utils/api/api"
+import { useUserContext } from "../../../../context/UserContext/UserContext"
+import { getUsernameFromJWT } from "../../../../utils/jwt/jwt"
 
 export function LoginForm() {
 	const [form, setForm] = useState<ILoginForm>({
@@ -25,6 +27,7 @@ export function LoginForm() {
 	const [isVisible, setIsVisible] = useState<boolean>(false)
 	const [error, setError] = useState<boolean>(false)
 
+	const { setUserContext } = useUserContext()
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,10 +37,13 @@ export function LoginForm() {
 			const resCallback = (data: any) => {
 				setError(false)
 				localStorage.setItem("token", data.token)
+
 				const t = setTimeout(() => {
 					navigate("/matches")
 					return () => clearTimeout(t)
 				}, 1000)
+
+				setUserContext({ username: getUsernameFromJWT(data.token) })
 			}
 
 			const errCallback = (err: any) => {

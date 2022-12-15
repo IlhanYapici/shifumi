@@ -4,9 +4,10 @@ import {
 	IGetMatchListParams,
 	IGetMatchParams,
 	ILoginParams,
+	IMoveParams,
 	IRegisterParams,
 	IRequestMatchParams
-} from "./utils-types"
+} from "./api-types"
 
 export async function getMatch(params: IGetMatchParams) {
 	const { matchId, token, resCallback, errCallback } = params
@@ -131,6 +132,39 @@ export async function loginUser(params: ILoginParams) {
 			username,
 			password
 		})
+		.then((res) => {
+			if (resCallback) {
+				resCallback(res.data)
+			}
+
+			return res
+		})
+		.catch((err) => {
+			if (errCallback) {
+				errCallback(err)
+			} else {
+				console.error(err)
+			}
+
+			return err
+		})
+
+	return res.data
+}
+
+export async function move(params: IMoveParams) {
+	const { token, matchId, turnId, move, resCallback, errCallback } = params
+
+	const res = await axios
+		.post(
+			`${import.meta.env.VITE_API_URL}/matches/${matchId}/turns/${turnId}`,
+			{ move },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
+		)
 		.then((res) => {
 			if (resCallback) {
 				resCallback(res.data)
