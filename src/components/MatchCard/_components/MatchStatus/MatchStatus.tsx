@@ -99,11 +99,10 @@ export function MatchStatus({ match }: { match: IMatch }) {
 						userSelect="none"
 						fontSize="2rem"
 						letterSpacing="1"
-						fontStyle="italic"
 						fontWeight="bold"
 						backgroundColor="gray.50"
 						borderRadius="0.6rem"
-						pr="0.9rem"
+						p="0.25rem 0.75rem"
 						filter="drop-shadow(0px 0px 10px #BFBFBF)"
 					>
 						<Text>VS</Text>

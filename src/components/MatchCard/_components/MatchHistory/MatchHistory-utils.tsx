@@ -20,11 +20,13 @@ export function getIcon(move: "rock" | "paper" | "scissors") {
 }
 
 export function getHistoryBody(turns: ITurn[]) {
+	let scoreHistory = { user1: 0, user2: 0 }
+
 	return turns.map((turn, i) => (
 		<Box
 			key={i}
 			display="grid"
-			gridTemplateColumns="1fr 1fr"
+			gridTemplateColumns="1fr 1fr 1fr"
 			w="90%"
 			backgroundColor="gray.100"
 			justifySelf="center"
@@ -53,6 +55,25 @@ export function getHistoryBody(turns: ITurn[]) {
 					<Text>{capitalize(turn.user1)}</Text>
 					{getIcon(turn.user1)}
 				</Box>
+			</Box>
+			<Box
+				w="fit-content"
+				h="100%"
+				backgroundColor="gray.50"
+				display="flex"
+				alignSelf="center"
+				justifySelf="center"
+				justifyContent="center"
+				alignItems="center"
+				p="0 0.7rem"
+				borderRadius="0.4rem"
+				filter="drop-shadow(0px 0px 10px #BFBFBF)"
+			>
+				<Text fontWeight="bold" h="fit-content" w="fit-content">
+					{turn.winner === "user1" ? ++scoreHistory.user1 : scoreHistory.user1}{" "}
+					-{" "}
+					{turn.winner === "user2" ? ++scoreHistory.user2 : scoreHistory.user2}
+				</Text>
 			</Box>
 			<Box
 				w="65%"
