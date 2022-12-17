@@ -71,11 +71,15 @@ export async function requestNewMatch(params: IRequestMatchParams) {
 	const { token, resCallback, errCallback } = params
 
 	const res = await axios
-		.post(`${import.meta.env.VITE_API_URL}/matches`, {
-			headers: {
-				Authorization: `Bearer ${token}`
+		.post(
+			`${import.meta.env.VITE_API_URL}/matches`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
 			}
-		})
+		)
 		.then((res) => {
 			if (resCallback) {
 				resCallback(res.data)

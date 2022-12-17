@@ -1,0 +1,7 @@
+.user1-move :last-child {
+    font-size: 1.2rem;
+}
+
+.user2-move :first-child {
+    font-size: 1.2rem;
+}

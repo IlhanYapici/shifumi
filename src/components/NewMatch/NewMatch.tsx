@@ -28,7 +28,7 @@ export function NewMatch() {
 	return (
 		<>
 			<Button position="fixed" bottom="1rem" right="1rem" onClick={onOpen}>
-				Create Match
+				Join a match
 			</Button>
 
 			<Modal blockScrollOnMount isCentered isOpen={isOpen} onClose={onClose}>

@@ -12,4 +12,4 @@ export type {
 	EChakraColor
 } from "./PulseBadge/PulseBadge-types"
 export { NewMatch } from "./NewMatch/NewMatch"
-export { Username } from "./Username/Username"
+export { BoxWithBgColor } from "./BoxWithBgColor/BoxWithBgColor"

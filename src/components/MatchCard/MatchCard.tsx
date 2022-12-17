@@ -1,178 +1,61 @@
-import { useNavigate } from "react-router-dom"
-import {
-	Badge,
-	Box,
-	Button,
-	Card,
-	CardBody,
-	CardFooter,
-	CardHeader,
-	Grid,
-	Image,
-	Spinner,
-	Text,
-	Tooltip
-} from "@chakra-ui/react"
+import { Card, useDisclosure } from "@chakra-ui/react"
+import { motion, AnimatePresence } from "framer-motion"
 
-import { EChakraColor } from "../PulseBadge/PulseBadge-types"
-import { getMatchStatus, getScores } from "../../utils/misc/misc"
-import { PulseBadge } from "../PulseBadge/PulseBadge"
 import { IMatchCardProps } from "./MatchCard-types"
-import imgUrl from "../../assets/versus-icon.svg"
-import { Username } from "../Username/Username"
-
-import "./MatchCard-styles.css"
+import { TopButtons } from "./_components/TopButtons/TopButtons"
+import { MatchStatus } from "./_components/MatchStatus/MatchStatus"
+import { MatchHistory } from "./_components/MatchHistory/MatchHistory"
+import { getMatchStatus } from "../../utils/misc/misc"
 
 export function MatchCard(props: IMatchCardProps) {
 	const { match } = props
-	const navigate = useNavigate()
 
+	const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: false })
 	const matchStatus = getMatchStatus(match)
-	const scores = getScores(match.turns)
-
-	const joinMatch = () => {
-		navigate(`/matches/${match._id}`)
-	}
-
-	const capitalize = (str: string) => {
-		return str.charAt(0).toUpperCase() + str.slice(1)
-	}
 
 	return (
 		<Card
 			className="match-card-container"
 			position="relative"
-			maxW="lg"
+			minH="3xs"
 			w="lg"
 			maxH="xs"
-			h="xs"
+			backgroundColor="gray.50"
+			border="1px solid white"
+			overflow="hidden"
 		>
-			<CardHeader display="flex" alignItems="center" gap="0.5rem">
-				{matchStatus !== "finished" && (
-					<PulseBadge
-						color={
-							matchStatus === "ongoing"
-								? EChakraColor.RED
-								: EChakraColor.WHATSAPP
-						}
-					/>
+			<motion.div
+				initial={{ height: "234px" }}
+				animate={{ height: isOpen ? "100%" : "234px" }}
+			>
+				{matchStatus === "finished" && (
+					<TopButtons isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 				)}
-				<Badge
-					colorScheme={
-						matchStatus === "finished"
-							? "gray"
-							: matchStatus === "ongoing"
-							? "red"
-							: "whatsapp"
-					}
-					userSelect="none"
-				>
-					{capitalize(getMatchStatus(match))}
-				</Badge>
-			</CardHeader>
-			<CardBody display="flex" alignItems="center" position="relative">
-				<Image
-					src={imgUrl}
-					zIndex={-1}
-					w="16rem"
-					position="absolute"
-					transform="translate(-50%, -50%)"
-					top="50%"
-					left="50%"
-					userSelect="none"
-					draggable="false"
-					opacity="0.25"
-				/>
-				<Grid
-					templateColumns="repeat(3, 1fr)"
-					justifyItems="center"
-					alignItems="center"
-					w="100%"
-				>
-					{match.user1 ? (
-						<Box
-							display="flex"
-							gap="1.15rem"
-							justifySelf="flex-end"
-							position="relative"
-							_before={{
-								zIndex: -1,
-								content: '""',
-								position: "absolute",
-								top: 0,
-								left: "-0.5rem",
-								width: "calc(100% + 1rem)",
-								height: "100%",
-								transform: "skew(-5deg)",
-								backgroundColor: "whatsapp.500"
-							}}
-							alignItems="center"
+				<AnimatePresence>
+					{!isOpen && (
+						<motion.div
+							key="matchStatus"
+							initial={{ transform: "translateX(-100%)" }}
+							animate={{ transform: "translateX(0%)" }}
+							exit={{ transform: "translateX(-100%)" }}
 						>
-							<Username player={1}>{match.user1.username}</Username>
-							<Username player={1} fontSize="2.5rem">
-								{scores.user1}
-							</Username>
-						</Box>
-					) : (
-						<Spinner />
+							<MatchStatus match={match} />
+						</motion.div>
 					)}
-					<Text
-						className="vs-text"
-						color="black"
-						userSelect="none"
-						fontSize="2rem"
-						letterSpacing="1"
-						fontStyle="italic"
-						fontWeight="bold"
-					>
-						VS
-					</Text>
-					{match.user2 ? (
-						<Box
-							display="flex"
-							gap="1.15rem"
-							justifySelf="flex-start"
-							alignItems="center"
-							position="relative"
-							_before={{
-								zIndex: -1,
-								content: '""',
-								position: "absolute",
-								top: 0,
-								left: "-0.5rem",
-								width: "calc(100% + 1rem)",
-								height: "100%",
-								transform: "skew(-5deg)",
-								backgroundColor: "orange.500"
-							}}
+				</AnimatePresence>
+				<AnimatePresence>
+					{isOpen && (
+						<motion.div
+							key="matchHistory"
+							initial={{ transform: "translateX(100%)" }}
+							animate={{ transform: "translateX(0%)" }}
+							exit={{ transform: "translateX(100%)" }}
 						>
-							<Username player={2} fontSize="2.5rem">
-								{scores.user1}
-							</Username>
-							<Username player={2}>{match.user2.username}</Username>
-						</Box>
-					) : (
-						<Spinner size="lg" thickness="0.2rem" speed="0.6s" />
+							<MatchHistory match={match} />
+						</motion.div>
 					)}
-				</Grid>
-			</CardBody>
-			<CardFooter>
-				<Tooltip
-					label={
-						matchStatus === "finished" ? "The match is finished." : undefined
-					}
-				>
-					<Button
-						disabled={matchStatus === "finished" ? true : false}
-						ml="auto"
-						colorScheme="linkedin"
-						variant="ghost"
-						onClick={joinMatch}
-					>
-						Play
-					</Button>
-				</Tooltip>
-			</CardFooter>
+				</AnimatePresence>
+			</motion.div>
 		</Card>
 	)
 }

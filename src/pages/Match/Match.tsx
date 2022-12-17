@@ -19,6 +19,12 @@ export function Match() {
 
 	// ["PLAYER_JOIN", "NEW_TURN", "TURN_ENDED", "PLAYER_MOVED", "MATCH_ENDED"]
 
+	const getCurrentTurn = (turns: any[]) => {
+		return Object.keys(turns[turns.length - 1]).includes("winner")
+			? turns.length + 1
+			: turns.length
+	}
+
 	useEffect(() => {
 		const fetchMatch = async () => {
 			if (!matchId) {
@@ -37,11 +43,8 @@ export function Match() {
 			const resCallback = (data: any) => {
 				setToken(localToken)
 
-				const currentTurn = Object.keys(
-					data.turns[data.turns.length - 1]
-				).includes("winner")
-					? data.turns.length + 1
-					: data.turns.length
+				const currentTurn =
+					data.turns.length > 0 ? getCurrentTurn(data.turns) : 1
 
 				const scores = getScores(data.turns)
 
@@ -118,7 +121,7 @@ export function Match() {
 
 		sse.onerror = (event) => {
 			console.log(event)
-			// sse.close()
+			sse.close()
 		}
 	}, [token])
 
