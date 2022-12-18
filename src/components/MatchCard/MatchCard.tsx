@@ -1,4 +1,4 @@
-import { Card, useDisclosure } from "@chakra-ui/react"
+import { Card, useDisclosure, useColorModeValue } from "@chakra-ui/react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { IMatchCardProps } from "./MatchCard-types"
@@ -20,8 +20,9 @@ export function MatchCard(props: IMatchCardProps) {
 			minH="3xs"
 			w="lg"
 			maxH="xs"
-			backgroundColor="gray.50"
-			border="1px solid white"
+			backgroundColor={useColorModeValue("gray.50", "gray.900")}
+			borderColor={useColorModeValue("white", "gray.800")}
+			borderWidth="1px"
 			overflow="hidden"
 		>
 			<motion.div
@@ -31,13 +32,14 @@ export function MatchCard(props: IMatchCardProps) {
 				{matchStatus === "finished" && (
 					<TopButtons isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 				)}
-				<AnimatePresence>
+				<AnimatePresence initial={false}>
 					{!isOpen && (
 						<motion.div
 							key="matchStatus"
-							initial={{ transform: "translateX(-100%)" }}
-							animate={{ transform: "translateX(0%)" }}
-							exit={{ transform: "translateX(-100%)" }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
 						>
 							<MatchStatus match={match} />
 						</motion.div>
@@ -50,6 +52,7 @@ export function MatchCard(props: IMatchCardProps) {
 							initial={{ transform: "translateX(100%)" }}
 							animate={{ transform: "translateX(0%)" }}
 							exit={{ transform: "translateX(100%)" }}
+							transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
 						>
 							<MatchHistory match={match} />
 						</motion.div>

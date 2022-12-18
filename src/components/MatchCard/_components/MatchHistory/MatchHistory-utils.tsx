@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react"
+import { Box, Text, useColorModeValue } from "@chakra-ui/react"
 import {
 	FaHandRock as RockIcon,
 	FaHandPaper as PaperIcon,
@@ -28,20 +28,27 @@ export function getHistoryBody(turns: ITurn[]) {
 			display="grid"
 			gridTemplateColumns="1fr 1fr 1fr"
 			w="90%"
-			backgroundColor="gray.100"
+			backgroundColor={useColorModeValue("gray.100", "gray.800")}
 			justifySelf="center"
 			overflow="hidden"
 			borderRadius="0.6rem"
 		>
 			<Box
-				w="65%"
+				w="80%"
 				display="flex"
-				backgroundColor={turn.winner === "user1" ? "whatsapp.500" : "gray.100"}
+				backgroundColor={
+					turn.winner === "user1"
+						? "orange.500"
+						: useColorModeValue("gray.100", "gray.800")
+				}
 				justifySelf="flex-start"
 				justifyContent="center"
 				alignItems="center"
 				borderRightRadius="0.6rem"
-				filter="drop-shadow(0px 0px 10px #BFBFBF)"
+				filter={useColorModeValue(
+					"drop-shadow(0px 0px 10px #BFBFBF)",
+					"drop-shadow(0px 0px 10px #0A0A0A)"
+				)}
 			>
 				<Box
 					className="user1-move"
@@ -49,7 +56,11 @@ export function getHistoryBody(turns: ITurn[]) {
 					justifyContent="center"
 					alignItems="center"
 					gap="0.75rem"
-					color={turn.winner === "user1" ? "white" : "black"}
+					color={
+						turn.winner === "user1"
+							? "white"
+							: useColorModeValue("black", "white")
+					}
 					userSelect="none"
 				>
 					<Text>{capitalize(turn.user1)}</Text>
@@ -59,7 +70,7 @@ export function getHistoryBody(turns: ITurn[]) {
 			<Box
 				w="fit-content"
 				h="100%"
-				backgroundColor="gray.50"
+				backgroundColor={useColorModeValue("gray.50", "gray.900")}
 				display="flex"
 				alignSelf="center"
 				justifySelf="center"
@@ -67,7 +78,10 @@ export function getHistoryBody(turns: ITurn[]) {
 				alignItems="center"
 				p="0 0.7rem"
 				borderRadius="0.4rem"
-				filter="drop-shadow(0px 0px 10px #BFBFBF)"
+				filter={useColorModeValue(
+					"drop-shadow(0px 0px 10px #BFBFBF)",
+					"drop-shadow(0px 0px 10px #0A0A0A)"
+				)}
 			>
 				<Text fontWeight="bold" h="fit-content" w="fit-content">
 					{turn.winner === "user1" ? ++scoreHistory.user1 : scoreHistory.user1}{" "}
@@ -76,14 +90,21 @@ export function getHistoryBody(turns: ITurn[]) {
 				</Text>
 			</Box>
 			<Box
-				w="65%"
+				w="80%"
 				display="flex"
-				backgroundColor={turn.winner === "user2" ? "orange.500" : "gray.100"}
+				backgroundColor={
+					turn.winner === "user2"
+						? "orange.500"
+						: useColorModeValue("gray.100", "gray.800")
+				}
 				justifySelf="flex-end"
 				justifyContent="center"
 				alignItems="center"
 				borderLeftRadius="0.6rem"
-				filter="drop-shadow(0px 0px 10px #BFBFBF)"
+				filter={useColorModeValue(
+					"drop-shadow(0px 0px 10px #BFBFBF)",
+					"drop-shadow(0px 0px 10px #0A0A0A)"
+				)}
 			>
 				<Box
 					className="user2-move"
@@ -91,7 +112,11 @@ export function getHistoryBody(turns: ITurn[]) {
 					justifyContent="center"
 					alignItems="center"
 					gap="0.75rem"
-					color={turn.winner === "user2" ? "white" : "black"}
+					color={
+						turn.winner === "user2"
+							? "white"
+							: useColorModeValue("black", "white")
+					}
 					userSelect="none"
 				>
 					{getIcon(turn.user2)}

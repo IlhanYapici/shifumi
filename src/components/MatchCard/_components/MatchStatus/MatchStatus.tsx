@@ -8,7 +8,8 @@ import {
 	Grid,
 	Spinner,
 	Text,
-	Tooltip
+	Tooltip,
+	useColorModeValue
 } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 
@@ -64,7 +65,7 @@ export function MatchStatus({ match }: { match: IMatch }) {
 					justifyItems="center"
 					alignItems="center"
 					w="100%"
-					backgroundColor="gray.100"
+					backgroundColor={useColorModeValue("gray.100", "gray.800")}
 					overflow="hidden"
 					borderRadius="0.6rem"
 				>
@@ -85,7 +86,10 @@ export function MatchStatus({ match }: { match: IMatch }) {
 								display="flex"
 								alignItems="center"
 								gap="1rem"
-								filter="drop-shadow(0px 0px 10px #9F9F9F)"
+								filter={useColorModeValue(
+									"drop-shadow(0px 0px 10px #BFBFBF)",
+									"drop-shadow(0px 0px 10px #0A0A0A)"
+								)}
 							>
 								<Text>{match.user1.username}</Text>
 								<Text fontSize="2rem">{scores.user1}</Text>
@@ -95,15 +99,18 @@ export function MatchStatus({ match }: { match: IMatch }) {
 						<Spinner />
 					)}
 					<BoxWithBgColor
-						color="black"
+						color={useColorModeValue("black", "white")}
 						userSelect="none"
 						fontSize="2rem"
 						letterSpacing="1"
 						fontWeight="bold"
-						backgroundColor="gray.50"
+						backgroundColor={useColorModeValue("gray.50", "gray.900")}
 						borderRadius="0.6rem"
 						p="0.25rem 0.75rem"
-						filter="drop-shadow(0px 0px 10px #BFBFBF)"
+						filter={useColorModeValue(
+							"drop-shadow(0px 0px 10px #BFBFBF)",
+							"drop-shadow(0px 0px 10px #0A0A0A)"
+						)}
 					>
 						<Text>VS</Text>
 					</BoxWithBgColor>
@@ -124,7 +131,10 @@ export function MatchStatus({ match }: { match: IMatch }) {
 								display="flex"
 								alignItems="center"
 								gap="1rem"
-								filter="drop-shadow(0px 0px 10px #9F9F9F)"
+								filter={useColorModeValue(
+									"drop-shadow(0px 0px 10px #BFBFBF)",
+									"drop-shadow(0px -5px 10px #0A0A0A)"
+								)}
 							>
 								<Text fontSize="2rem">{scores.user2}</Text>
 								<Text>{match.user2.username}</Text>

@@ -3,6 +3,7 @@ import { useEffect } from "react"
 
 import { useUserContext } from "./context/UserContext/UserContext"
 import { getUsernameFromJWT } from "./utils/jwt/jwt"
+import { ThemeButton } from "./components"
 
 import "./App.css"
 
@@ -16,11 +17,13 @@ function App() {
 
 	useEffect(() => {
 		const token = localStorage.getItem("token")
+
 		if (token === null) {
 			navigate("/auth")
-		} else if (token !== null && username === "") {
+		} else if (username === "") {
 			setUserContext({ username: getUsernameFromJWT(token) })
 		}
+
 		if (location.pathname === "/") {
 			navigate("/matches ")
 		}
@@ -28,6 +31,7 @@ function App() {
 
 	return (
 		<div className="App">
+			<ThemeButton />
 			<Outlet />
 		</div>
 	)

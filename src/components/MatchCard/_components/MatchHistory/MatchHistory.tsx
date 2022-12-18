@@ -1,17 +1,11 @@
 import {
-	Badge,
-	Box,
-	Button,
 	CardBody,
 	CardFooter,
 	CardHeader,
 	Divider,
 	Grid,
-	IconButton,
-	Image,
-	Spinner,
 	Text,
-	Tooltip
+	useColorModeValue
 } from "@chakra-ui/react"
 
 import { IMatchHistoryProps } from "./MatchHistory-types"
@@ -25,8 +19,13 @@ export function MatchHistory(props: IMatchHistoryProps) {
 
 	return (
 		<>
-			<CardHeader textAlign="center" h="67px">
-				<Grid templateColumns="1fr 148px 1fr" p="0 5%">
+			<CardHeader
+				zIndex="5"
+				textAlign="center"
+				h="67px"
+				backgroundColor={useColorModeValue("gray.50", "gray.900")}
+			>
+				<Grid templateColumns="1fr 197px 1fr" p="0 5%">
 					<Text
 						justifySelf="center"
 						alignSelf="center"
@@ -43,8 +42,6 @@ export function MatchHistory(props: IMatchHistoryProps) {
 						userSelect="none"
 						fontSize="0.9rem"
 						letterSpacing="1"
-						fontStyle="italic"
-						fontWeight="bold"
 					>
 						VS
 					</Text>
@@ -59,12 +56,25 @@ export function MatchHistory(props: IMatchHistoryProps) {
 						{user2?.username}
 					</Text>
 				</Grid>
-				<Divider w="90%" />
+				<Divider w="90%" m="0 auto" />
 			</CardHeader>
-			<CardBody display="grid" gridAutoRows="auto" gap="1rem" h="182px">
+			<CardBody
+				zIndex="5"
+				display="grid"
+				gridAutoRows="auto"
+				gap="1rem"
+				h="182px"
+				backgroundColor={useColorModeValue("gray.50", "gray.900")}
+			>
 				{getHistoryBody(turns)}
 			</CardBody>
-			<CardFooter h="69px">{getHistoryFooter(winner)}</CardFooter>
+			<CardFooter
+				zIndex="5"
+				h="69px"
+				backgroundColor={useColorModeValue("gray.50", "gray.900")}
+			>
+				{getHistoryFooter(winner)}
+			</CardFooter>
 		</>
 	)
 }

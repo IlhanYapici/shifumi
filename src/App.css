@@ -11,3 +11,7 @@ html, body, #root, .App {
   margin: 0;
   padding: 0;
 }
+
+.App {
+  position: relative;
+}
