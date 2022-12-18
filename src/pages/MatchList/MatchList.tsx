@@ -47,7 +47,8 @@ export function MatchList() {
 				className="match-list-container"
 				w="fit-content"
 				m="0 auto"
-				pt="75px"
+				pt="100px"
+				pb="75px"
 				gap="2rem"
 			>
 				{matchList.map((match, i, arr) => {
