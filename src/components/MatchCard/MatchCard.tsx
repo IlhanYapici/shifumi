@@ -39,7 +39,7 @@ export function MatchCard(props: IMatchCardProps) {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
+							transition={{ duration: 0.25 }}
 						>
 							<MatchStatus match={match} />
 						</motion.div>
@@ -52,7 +52,7 @@ export function MatchCard(props: IMatchCardProps) {
 							initial={{ transform: "translateX(100%)" }}
 							animate={{ transform: "translateX(0%)" }}
 							exit={{ transform: "translateX(100%)" }}
-							transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
+							transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
 						>
 							<MatchHistory match={match} />
 						</motion.div>

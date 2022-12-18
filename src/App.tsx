@@ -19,7 +19,7 @@ function App() {
 		const token = localStorage.getItem("token")
 
 		if (token === null) {
-			navigate("/auth")
+			navigate("/login")
 		} else if (username === "") {
 			setUserContext({ username: getUsernameFromJWT(token) })
 		}

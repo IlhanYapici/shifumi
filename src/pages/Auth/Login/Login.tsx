@@ -9,17 +9,18 @@ import {
 	InputGroup,
 	Input,
 	InputRightElement,
-	Button
+	Button,
+	useColorModeValue
 } from "@chakra-ui/react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 import { ILoginForm } from "../types"
-import { loginUser } from "../../../../utils/api/api"
-import { useUserContext } from "../../../../context/UserContext/UserContext"
-import { getUsernameFromJWT } from "../../../../utils/jwt/jwt"
+import { loginUser } from "../../../utils/api/api"
+import { useUserContext } from "../../../context/UserContext/UserContext"
+import { getUsernameFromJWT } from "../../../utils/jwt/jwt"
 
-export function LoginForm() {
+export function Login() {
 	const [form, setForm] = useState<ILoginForm>({
 		username: "",
 		password: ""
@@ -70,9 +71,19 @@ export function LoginForm() {
 		<Box
 			className="login-form-container"
 			position="relative"
-			w="100%"
+			w="fit-content"
 			h="fit-content"
-			p="4rem 6rem"
+			p="2rem"
+			backgroundColor={useColorModeValue("gray.50", "gray.800")}
+			alignSelf="center"
+			m="0 auto"
+			borderColor={useColorModeValue("white", "gray.700")}
+			borderWidth="1px"
+			borderRadius="1rem"
+			filter={useColorModeValue(
+				"drop-shadow(0px 0px 15px #BFBFBF)",
+				"drop-shadow(0px 0px 15px #0A0A0A)"
+			)}
 		>
 			{error && (
 				<Alert
@@ -131,6 +142,12 @@ export function LoginForm() {
 					Login
 				</Button>
 			</form>
+			<Box display="flex" gap="0.5rem" w="fit-content" m="2rem auto 0 auto">
+				Don't have an account yet?
+				<Button variant="link" color="linkedin.500">
+					<Link to="/auth/register">Register</Link>
+				</Button>
+			</Box>
 		</Box>
 	)
 }

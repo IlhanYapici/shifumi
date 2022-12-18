@@ -11,14 +11,16 @@ import {
 	InputRightElement,
 	Button,
 	FormErrorMessage,
-	useToast
+	useToast,
+	useColorModeValue
 } from "@chakra-ui/react"
 import { useState } from "react"
 
 import { IRegisterForm, THandleChange } from "../types"
-import { registerUser } from "../../../../utils/api/api"
+import { registerUser } from "../../../utils/api/api"
+import { Link } from "react-router-dom"
 
-export function RegisterForm() {
+export function Register() {
 	const [form, setForm] = useState<IRegisterForm>({
 		username: { isInvalid: undefined, value: "" },
 		password: { isInvalid: undefined, value: "" }
@@ -85,9 +87,19 @@ export function RegisterForm() {
 		<Box
 			className="register-form-container"
 			position="relative"
-			w="100%"
+			w="fit-content"
 			h="fit-content"
-			p="4rem 6rem"
+			p="2rem"
+			backgroundColor={useColorModeValue("gray.50", "gray.800")}
+			alignSelf="center"
+			m="0 auto"
+			borderColor={useColorModeValue("white", "gray.700")}
+			borderWidth="1px"
+			borderRadius="1rem"
+			filter={useColorModeValue(
+				"drop-shadow(0px 0px 15px #BFBFBF)",
+				"drop-shadow(0px 0px 15px #0A0A0A)"
+			)}
 		>
 			{error && (
 				<Alert
@@ -153,6 +165,12 @@ export function RegisterForm() {
 					Register
 				</Button>
 			</form>
+			<Box display="flex" gap="0.5rem" w="fit-content" m="2rem auto 0 auto">
+				Already a user?
+				<Button variant="link" color="linkedin.500">
+					<Link to="/auth/login">Login</Link>
+				</Button>
+			</Box>
 		</Box>
 	)
 }

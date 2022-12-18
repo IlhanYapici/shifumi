@@ -9,7 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import ReactDOM from "react-dom/client"
 import React from "react"
 
-import { Auth, Match, MatchList } from "./pages"
+import { Auth, Login, Register, Match, MatchList } from "./pages"
 import App from "./App"
 
 import "./index.css"
@@ -35,7 +35,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 									}
 								/>
 							</Route>
-							<Route path="auth" element={<Auth />} />
+						</Route>
+						<Route path="/auth" element={<Auth />}>
+							<Route path="login" element={<Login />} />
+							<Route path="register" element={<Register />} />
 						</Route>
 					</Routes>
 				</BrowserRouter>

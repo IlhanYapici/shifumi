@@ -1,28 +1,32 @@
-import { Box, Grid, Divider } from "@chakra-ui/react"
+import { Box, Image, useColorMode } from "@chakra-ui/react"
+import { Outlet, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 
-import { LoginForm, RegisterForm } from "./_components"
+import darkBgImg from "../../assets/auth-dark-wallpaper.jpg"
+import lightBgImg from "../../assets/auth-light-wallpaper.jpg"
 
 export function Auth() {
+	const { colorMode } = useColorMode()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		navigate("login")
+	}, [])
+
 	return (
-		<Box
-			className="auth-forms-container"
-			mt="55px"
-			h="90%"
-			display="flex"
-			justifyContent="center"
-			alignItems="center"
-		>
-			<Grid
-				w="1280px"
-				h="fit-content"
-				templateColumns="1fr 6rem 1fr"
-				justifyItems="center"
-				alignItems="center"
-			>
-				<LoginForm />
-				<Divider orientation="vertical" h="500px" />
-				<RegisterForm />
-			</Grid>
+		<Box h="100%" w="100%" position="relative" display="flex">
+			<Image
+				h="100%"
+				w="100%"
+				position="absolute"
+				top="0"
+				left="0"
+				backgroundImage={colorMode === "dark" ? darkBgImg : lightBgImg}
+				backgroundSize="cover"
+				backgroundPosition="top"
+				filter="blur(0.5rem)"
+			/>
+			<Outlet />
 		</Box>
 	)
 }
