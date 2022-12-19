@@ -1,5 +1,6 @@
 import {
 	Box,
+	Divider,
 	IconButton,
 	Text,
 	Tooltip,
@@ -42,11 +43,14 @@ export function Header() {
 			borderBottomWidth="1px"
 		>
 			<Logo />
-			<Box display="flex" gap="1rem" pr="0.75rem" alignItems="center">
+			<Box display="flex" gap="1rem" pr="1rem" alignItems="center">
 				<Box display="flex" gap="0.75rem" alignItems="center">
 					<Text>Connected as :</Text>
-					<Text fontWeight="bold">{username}</Text>
+					<Text fontWeight="bold" textTransform="uppercase">
+						{username}
+					</Text>
 				</Box>
+				<Divider orientation="vertical" h="2rem" />
 				<ThemeButton />
 				<Tooltip label="Logout">
 					<IconButton

@@ -22,9 +22,12 @@ import {
 	getScores
 } from "../../../../utils/misc/misc"
 import { BoxWithBgColor } from "../../../BoxWithBgColor/BoxWithBgColor"
+import { useRef } from "react"
 
 export function MatchStatus({ match }: { match: IMatch }) {
 	const navigate = useNavigate()
+	const user1Ref = useRef(null)
+	const user2Ref = useRef(null)
 
 	const matchStatus: TMatchStatus = getMatchStatus(match)
 	const scores = getScores(match.turns)
@@ -78,22 +81,32 @@ export function MatchStatus({ match }: { match: IMatch }) {
 							position="relative"
 							alignItems="center"
 						>
-							<Box
-								backgroundColor="whatsapp.500"
-								padding="0.25rem 0.5rem"
-								borderRadius="0.6rem"
-								color="white"
-								display="flex"
-								alignItems="center"
-								gap="1rem"
-								filter={useColorModeValue(
-									"drop-shadow(0px 0px 10px #BFBFBF)",
-									"drop-shadow(0px 0px 10px #0A0A0A)"
-								)}
+							<Tooltip
+								label={match.user1.username.toUpperCase()}
+								placement="left"
+								openDelay={250}
+								hasArrow
 							>
-								<Text textTransform="uppercase">{match.user1.username}</Text>
-								<Text fontSize="2rem">{scores.user1}</Text>
-							</Box>
+								<Box
+									backgroundColor="whatsapp.500"
+									padding="0.25rem 0.5rem"
+									borderRadius="0.6rem"
+									color="white"
+									display="flex"
+									alignItems="center"
+									gap="1rem"
+									w="131px"
+									filter={useColorModeValue(
+										"drop-shadow(0px 0px 10px #BFBFBF)",
+										"drop-shadow(0px 0px 10px #0A0A0A)"
+									)}
+								>
+									<Text textTransform="uppercase" noOfLines={1}>
+										{match.user1.username}
+									</Text>
+									<Text fontSize="2rem">{scores.user1}</Text>
+								</Box>
+							</Tooltip>
 						</Box>
 					) : (
 						<Spinner />
@@ -123,22 +136,32 @@ export function MatchStatus({ match }: { match: IMatch }) {
 							alignItems="center"
 							position="relative"
 						>
-							<Box
-								backgroundColor="orange.500"
-								padding="0.25rem 0.5rem"
-								borderRadius="0.6rem"
-								color="white"
-								display="flex"
-								alignItems="center"
-								gap="1rem"
-								filter={useColorModeValue(
-									"drop-shadow(0px 0px 10px #BFBFBF)",
-									"drop-shadow(0px -5px 10px #0A0A0A)"
-								)}
+							<Tooltip
+								label={match.user2.username.toUpperCase()}
+								placement="right"
+								openDelay={250}
+								hasArrow
 							>
-								<Text fontSize="2rem">{scores.user2}</Text>
-								<Text textTransform="uppercase">{match.user2.username}</Text>
-							</Box>
+								<Box
+									backgroundColor="orange.500"
+									padding="0.25rem 0.5rem"
+									borderRadius="0.6rem"
+									color="white"
+									display="flex"
+									alignItems="center"
+									gap="1rem"
+									w="131px"
+									filter={useColorModeValue(
+										"drop-shadow(0px 0px 10px #BFBFBF)",
+										"drop-shadow(0px -5px 10px #0A0A0A)"
+									)}
+								>
+									<Text fontSize="2rem">{scores.user2}</Text>
+									<Text textTransform="uppercase" noOfLines={1}>
+										{match.user2.username}
+									</Text>
+								</Box>
+							</Tooltip>
 						</Box>
 					) : (
 						<Spinner size="lg" thickness="0.2rem" speed="0.6s" />

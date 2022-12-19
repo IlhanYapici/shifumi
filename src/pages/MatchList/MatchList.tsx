@@ -23,7 +23,6 @@ export function MatchList() {
 				token,
 				resCallback: (data) => {
 					setMatchList(data)
-					console.log(data)
 				}
 			})
 		}

@@ -35,3 +35,7 @@ export function getMatchStatus(match: IMatch): "open" | "ongoing" | "finished" {
 export function capitalize(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1)
 }
+
+export function uppercase(str: string) {
+	return str.toUpperCase()
+}
