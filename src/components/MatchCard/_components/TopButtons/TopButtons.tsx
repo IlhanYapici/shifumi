@@ -48,11 +48,7 @@ export function TopButtons(props: ITopButtonsProps) {
 	}
 
 	return (
-		<Tooltip
-			label={isOpen ? "Close" : "Match history"}
-			placement="top"
-			hasArrow
-		>
+		<Tooltip label={isOpen ? "Close" : "Match history"} placement="top">
 			{getButton()}
 		</Tooltip>
 	)

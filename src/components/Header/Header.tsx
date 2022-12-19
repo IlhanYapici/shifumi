@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom"
 
 import { useUserContext } from "../../context/UserContext/UserContext"
 import { Logo } from "../Logo/Logo"
+import { ThemeButton } from "../ThemeButton/ThemeButton"
 
 export function Header() {
 	const navigate = useNavigate()
@@ -41,20 +42,20 @@ export function Header() {
 			borderBottomWidth="1px"
 		>
 			<Logo />
-			<Box display="flex" gap="1rem" pr="0.75rem">
+			<Box display="flex" gap="1rem" pr="0.75rem" alignItems="center">
 				<Box display="flex" gap="0.75rem" alignItems="center">
 					<Text>Connected as :</Text>
 					<Text fontWeight="bold">{username}</Text>
 				</Box>
+				<ThemeButton />
 				<Tooltip label="Logout">
 					<IconButton
 						aria-label="logout button"
-						variant="ghost"
 						icon={<LogoutIcon />}
 						colorScheme="red"
-						size="lg"
-						fontSize="1.5rem"
+						fontSize="1.25rem"
 						borderRadius="50%"
+						variant="outline"
 						onClick={() => logout()}
 					/>
 				</Tooltip>

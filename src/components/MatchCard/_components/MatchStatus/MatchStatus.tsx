@@ -91,7 +91,7 @@ export function MatchStatus({ match }: { match: IMatch }) {
 									"drop-shadow(0px 0px 10px #0A0A0A)"
 								)}
 							>
-								<Text>{match.user1.username}</Text>
+								<Text textTransform="uppercase">{match.user1.username}</Text>
 								<Text fontSize="2rem">{scores.user1}</Text>
 							</Box>
 						</Box>
@@ -137,7 +137,7 @@ export function MatchStatus({ match }: { match: IMatch }) {
 								)}
 							>
 								<Text fontSize="2rem">{scores.user2}</Text>
-								<Text>{match.user2.username}</Text>
+								<Text textTransform="uppercase">{match.user2.username}</Text>
 							</Box>
 						</Box>
 					) : (

@@ -27,7 +27,13 @@ export function NewMatch() {
 
 	return (
 		<>
-			<Button position="fixed" bottom="1rem" right="1rem" onClick={onOpen}>
+			<Button
+				position="fixed"
+				bottom="1rem"
+				right="1rem"
+				colorScheme="linkedin"
+				onClick={onOpen}
+			>
 				Join a match
 			</Button>
 
@@ -35,7 +41,7 @@ export function NewMatch() {
 				<ModalOverlay />
 				<ModalContent w="fit-content">
 					<ModalHeader>
-						<Text>You want to create a new match ?</Text>
+						<Text>Do you want to join a new match ?</Text>
 					</ModalHeader>
 					<ModalFooter display="flex" gap="1rem">
 						<Button colorScheme="linkedin" ml="auto" onClick={newMatch}>
