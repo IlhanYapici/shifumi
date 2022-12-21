@@ -22,12 +22,9 @@ import {
 	getScores
 } from "../../../../utils/misc/misc"
 import { BoxWithBgColor } from "../../../BoxWithBgColor/BoxWithBgColor"
-import { useRef } from "react"
 
 export function MatchStatus({ match }: { match: IMatch }) {
 	const navigate = useNavigate()
-	const user1Ref = useRef(null)
-	const user2Ref = useRef(null)
 
 	const matchStatus: TMatchStatus = getMatchStatus(match)
 	const scores = getScores(match.turns)

@@ -12,7 +12,7 @@ import { getScores } from "../../utils/misc/misc"
 import { Loading } from "./_components/Loading/Loading"
 
 export function Match() {
-	const [loading, setLoading] = useState<boolean>(false)
+	const [loading, setLoading] = useState<boolean>(true)
 	const [token, setToken] = useState<string | null>(null)
 	const [controlsDisabled, setControlsDisabled] = useState<boolean>(false)
 	// const [eventSource, setEventSource] = useState<EventSourcePolyfill>()
@@ -70,11 +70,11 @@ export function Match() {
 
 		fetchMatch()
 
-		// const t = setTimeout(() => {
-		// 	setLoading(false)
-		// }, defaultDelay)
+		const t = setTimeout(() => {
+			setLoading(false)
+		}, defaultDelay)
 
-		// return () => clearTimeout(t)
+		return () => clearTimeout(t)
 	}, [])
 
 	useEffect(() => {

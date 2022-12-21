@@ -1,4 +1,4 @@
-import { Divider, Grid, transition } from "@chakra-ui/react"
+import { Divider } from "@chakra-ui/react"
 import {
 	FaHandRock as RockIcon,
 	FaHandPaper as PaperIcon,
