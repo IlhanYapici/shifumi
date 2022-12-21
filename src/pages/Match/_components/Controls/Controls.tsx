@@ -1,14 +1,17 @@
-import { Divider, Grid } from "@chakra-ui/react"
+import { Divider, Grid, transition } from "@chakra-ui/react"
 import {
 	FaHandRock as RockIcon,
 	FaHandPaper as PaperIcon,
 	FaHandScissors as ScissorsIcon
 } from "react-icons/fa"
+import { Variants, motion } from "framer-motion"
 
 import { move } from "../../../../utils/api/api"
 import { useMatchContext } from "../../../../context/MatchContext/MatchContext"
 import { ActionButton } from "../../../../components/ActionButton/ActionButton"
 import { useParams } from "react-router-dom"
+
+import "./Controls-styles.css"
 
 export function Controls({ disabled = false }: { disabled?: boolean }) {
 	const { matchContext } = useMatchContext()
@@ -56,57 +59,93 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 		}
 	}
 
+	const variantsContainer: Variants = {
+		hidden: { translateX: "-50%", translateY: "100px", opacity: 0 },
+		show: {
+			translateY: 0,
+			opacity: 1,
+			transition: {
+				type: "spring",
+				delay: 0.3,
+				duration: 0.4,
+				staggerChildren: 0.1,
+				delayChildren: 0.3
+			}
+		}
+	}
+
+	const variantsChildren: Variants = {
+		hidden: {
+			scale: 0,
+			translateY: "100px"
+		},
+		show: {
+			scale: 1,
+			translateY: 0,
+			transition: {
+				type: "spring",
+				bounce: 0.45
+			}
+		}
+	}
+
+	const children = [
+		<ActionButton
+			hasTooltip
+			tooltipLabel="Rock"
+			ariaLabel="rock button"
+			icon={<RockIcon />}
+			onClick={() => {
+				onClick("rock")
+			}}
+			variant="ghost"
+			disabled={disabled}
+		/>,
+		<Divider orientation="vertical" />,
+		<ActionButton
+			hasTooltip
+			tooltipLabel="Paper"
+			ariaLabel="paper button"
+			icon={<PaperIcon />}
+			onClick={() => {
+				onClick("paper")
+			}}
+			variant="ghost"
+			disabled={disabled}
+		/>,
+		<Divider orientation="vertical" />,
+		<ActionButton
+			hasTooltip
+			tooltipLabel="Scissors"
+			ariaLabel="scissors button"
+			icon={<ScissorsIcon />}
+			onClick={() => {
+				onClick("scissors")
+			}}
+			variant="ghost"
+			disabled={disabled}
+		/>
+	]
+
 	return (
-		<Grid
-			templateColumns="1fr auto 1fr auto 1fr"
-			gap="1rem"
-			position="fixed"
-			bottom="0"
-			left="50%"
-			padding="1rem"
-			transform="translateX(-50%)"
-			borderLeft="0.2rem solid"
-			borderTop="0.2rem solid"
-			borderRight="0.2rem solid"
-			borderBottom="0"
-			borderColor={disabled ? "linkedin.100" : "linkedin.500"}
-			borderRadius="1rem 1rem 0 0"
+		<motion.div
+			className="controls"
+			style={{
+				borderColor: disabled
+					? "var(--chakra-colors-linkedin-100)"
+					: "var(--chakra-colors-linkedin-500)"
+			}}
+			variants={variantsContainer}
+			initial="hidden"
+			animate="show"
 		>
-			<ActionButton
-				hasTooltip
-				tooltipLabel="Rock"
-				ariaLabel="rock button"
-				icon={<RockIcon />}
-				onClick={() => {
-					onClick("rock")
-				}}
-				variant="ghost"
-				disabled={disabled}
-			/>
-			<Divider orientation="vertical" />
-			<ActionButton
-				hasTooltip
-				tooltipLabel="Paper"
-				ariaLabel="paper button"
-				icon={<PaperIcon />}
-				onClick={() => {
-					onClick("paper")
-				}}
-				variant="ghost"
-				disabled={disabled}
-			/>
-			<Divider orientation="vertical" />
-			<ActionButton
-				hasTooltip
-				tooltipLabel="Scissors"
-				ariaLabel="scissors button"
-				icon={<ScissorsIcon />}
-				onClick={() => {
-					onClick("scissors")
-				}}
-				variant="ghost"
-				disabled={disabled}
-			/>
-		</Grid>
+			{children.map((child, i) => {
+				if (i % 2 === 0) {
+					return <motion.div variants={variantsChildren}>{child}</motion.div>
+				} else {
+					return child
+				}
+			})}
+		</motion.div>
 	)
 }

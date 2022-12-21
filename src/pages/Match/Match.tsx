@@ -1,4 +1,5 @@
 import { EventSourcePolyfill } from "event-source-polyfill"
+import { AnimatePresence, motion } from "framer-motion"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 
@@ -8,8 +9,10 @@ import { Controls } from "./_components/Controls/Controls"
 import { getMatch } from "../../utils/api/api"
 import { getUsernameFromJWT } from "../../utils/jwt/jwt"
 import { getScores } from "../../utils/misc/misc"
+import { Loading } from "./_components/Loading/Loading"
 
 export function Match() {
+	const [loading, setLoading] = useState<boolean>(false)
 	const [token, setToken] = useState<string | null>(null)
 	const [controlsDisabled, setControlsDisabled] = useState<boolean>(false)
 	// const [eventSource, setEventSource] = useState<EventSourcePolyfill>()
@@ -18,6 +21,8 @@ export function Match() {
 	const { matchContext, setMatchContext, updateScore } = useMatchContext()
 
 	// ["PLAYER_JOIN", "NEW_TURN", "TURN_ENDED", "PLAYER_MOVED", "MATCH_ENDED"]
+
+	const defaultDelay = 2000
 
 	const getCurrentTurn = (turns: any[]) => {
 		return Object.keys(turns[turns.length - 1]).includes("winner")
@@ -64,6 +69,12 @@ export function Match() {
 		}
 
 		fetchMatch()
+
+		// const t = setTimeout(() => {
+		// 	setLoading(false)
+		// }, defaultDelay)
+
+		// return () => clearTimeout(t)
 	}, [])
 
 	useEffect(() => {
@@ -126,9 +137,28 @@ export function Match() {
 	}, [token])
 
 	return (
-		<>
-			<ScoreBar />
-			<Controls disabled={controlsDisabled} />
-		</>
+		<AnimatePresence>
+			{loading && (
+				<motion.div
+					key="progressBar"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<Loading delay={500} />
+				</motion.div>
+			)}
+			{!loading && (
+				<motion.div
+					key="matchPage"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<ScoreBar />
+					<Controls disabled={controlsDisabled} />
+				</motion.div>
+			)}
+		</AnimatePresence>
 	)
 }
