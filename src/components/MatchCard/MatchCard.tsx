@@ -18,7 +18,9 @@ export function MatchCard(props: IMatchCardProps) {
 			className="match-card-container"
 			position="relative"
 			minH="3xs"
-			w="lg"
+			minW="sm"
+			w="100%"
+			maxW="lg"
 			maxH="xs"
 			backgroundColor={useColorModeValue("gray.50", "gray.900")}
 			borderColor={useColorModeValue("white", "gray.800")}

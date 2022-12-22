@@ -21,30 +21,30 @@ export function MatchProvider({ children }: IMatchProviderProps) {
 	const updateScore = (user: "user1" | "user2") => {
 		switch (user) {
 			case "user1":
-				setMatchContext({
-					...matchContext,
-					currentTurn: matchContext.currentTurn + 1,
+				setMatchContext((prevState) => ({
+					...prevState,
+					currentTurn: prevState.currentTurn + 1,
 					players: {
-						...matchContext.players,
+						...prevState.players,
 						"0": {
-							...matchContext.players[0],
-							score: matchContext.players[0].score + 1
+							...prevState.players[0],
+							score: prevState.players[0].score + 1
 						}
 					}
-				})
+				}))
 				break
 			case "user2":
-				setMatchContext({
-					...matchContext,
-					currentTurn: matchContext.currentTurn + 1,
+				setMatchContext((prevState) => ({
+					...prevState,
+					currentTurn: prevState.currentTurn + 1,
 					players: {
-						...matchContext.players,
+						...prevState.players,
 						"1": {
-							...matchContext.players[1],
-							score: matchContext.players[1].score + 1
+							...prevState.players[1],
+							score: prevState.players[1].score + 1
 						}
 					}
-				})
+				}))
 		}
 	}
 

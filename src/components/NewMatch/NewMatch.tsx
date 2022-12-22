@@ -10,8 +10,10 @@ import {
 } from "@chakra-ui/react"
 
 import { requestNewMatch } from "../../utils/api/api"
+import { INewMatchProps } from "./NewMatch-types"
 
-export function NewMatch() {
+export function NewMatch(props: INewMatchProps) {
+	const { forceUpdate, setTabIndex } = props
 	const { isOpen, onOpen, onClose } = useDisclosure()
 
 	const newMatch = async () => {
@@ -22,12 +24,15 @@ export function NewMatch() {
 
 		await requestNewMatch({ token })
 
+		forceUpdate()
+		setTabIndex(0)
 		onClose()
 	}
 
 	return (
 		<>
 			<Button
+				zIndex={10}
 				position="fixed"
 				bottom="1rem"
 				right="1rem"

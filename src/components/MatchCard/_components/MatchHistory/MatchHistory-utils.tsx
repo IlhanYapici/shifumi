@@ -26,7 +26,7 @@ export function getHistoryBody(turns: ITurn[]) {
 		<Box
 			key={i}
 			display="grid"
-			gridTemplateColumns="1fr 1fr 1fr"
+			gridTemplateColumns="1fr auto 1fr"
 			w="90%"
 			backgroundColor={useColorModeValue("gray.100", "gray.800")}
 			justifySelf="center"
@@ -137,7 +137,7 @@ export function getHistoryFooter(winner: IUser | null) {
 			)}
 			{winner && (
 				<Text fontWeight="bold" fontSize="1.2rem">
-					{winner.username} won !
+					{winner.username.toUpperCase()} won !
 				</Text>
 			)}
 		</Box>

@@ -91,6 +91,7 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 
 	const children = [
 		<ActionButton
+			key="button1"
 			hasTooltip
 			tooltipLabel="Rock"
 			ariaLabel="rock button"
@@ -101,8 +102,9 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 			variant="ghost"
 			disabled={disabled}
 		/>,
-		<Divider orientation="vertical" />,
+		<Divider key="divider1" orientation="vertical" />,
 		<ActionButton
+			key="button2"
 			hasTooltip
 			tooltipLabel="Paper"
 			ariaLabel="paper button"
@@ -113,8 +115,9 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 			variant="ghost"
 			disabled={disabled}
 		/>,
-		<Divider orientation="vertical" />,
+		<Divider key="divider2" orientation="vertical" />,
 		<ActionButton
+			key="button3"
 			hasTooltip
 			tooltipLabel="Scissors"
 			ariaLabel="scissors button"
@@ -141,7 +144,11 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 		>
 			{children.map((child, i) => {
 				if (i % 2 === 0) {
-					return <motion.div variants={variantsChildren}>{child}</motion.div>
+					return (
+						<motion.div key={"button" + i} variants={variantsChildren}>
+							{child}
+						</motion.div>
+					)
 				} else {
 					return child
 				}

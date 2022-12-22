@@ -25,7 +25,7 @@ export function MatchHistory(props: IMatchHistoryProps) {
 				h="67px"
 				backgroundColor={useColorModeValue("gray.50", "gray.900")}
 			>
-				<Grid templateColumns="1fr 197px 1fr" p="0 5%">
+				<Grid templateColumns="1fr 1fr 1fr" p="0 5%">
 					<Text
 						justifySelf="center"
 						alignSelf="center"

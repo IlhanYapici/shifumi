@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { IMatch } from "../../components"
 
 export function getScores(turns: any[]) {
@@ -38,4 +40,9 @@ export function capitalize(str: string) {
 
 export function uppercase(str: string) {
 	return str.toUpperCase()
+}
+
+export function useForceUpdate() {
+	const [, setValue] = useState<number>(0)
+	return () => setValue((value) => ++value)
 }

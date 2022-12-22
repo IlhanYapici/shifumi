@@ -1,14 +1,22 @@
+import { Tabs, Tab, TabList, TabPanels, TabPanel } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
-import { Divider, Grid } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 
-import { Header, IMatch, MatchCard, NewMatch } from "../../components"
+import { getMatchStatus, useForceUpdate } from "../../utils/misc/misc"
+import { Header, IMatch, NewMatch, NotFound } from "../../components"
 import { getMatchList } from "../../utils/api/api"
+import { List } from "./_components/List/List"
 
 export function MatchList() {
-	const [matchList, setMatchList] = useState<IMatch[]>([])
+	const [loading, setLoading] = useState<boolean>(true)
+	const [tabIndex, setTabIndex] = useState<number>(0)
+	const [matchList, setMatchList] = useState<{
+		finished: IMatch[]
+		ongoing: IMatch[]
+	}>({ finished: [], ongoing: [] })
 
 	const navigate = useNavigate()
+	const forceUpdate = useForceUpdate()
 
 	useEffect(() => {
 		const token = localStorage.getItem("token")
@@ -21,8 +29,20 @@ export function MatchList() {
 		const fetchMatchList = async () => {
 			await getMatchList({
 				token,
-				resCallback: (data) => {
-					setMatchList(data)
+				resCallback: (data: IMatch[]) => {
+					let finished: IMatch[] = []
+					let ongoing: IMatch[] = []
+
+					data.forEach((match) => {
+						if (getMatchStatus(match) === "finished") {
+							finished.push(match)
+						} else {
+							ongoing.push(match)
+						}
+					})
+
+					setMatchList({ finished, ongoing })
+					setLoading(false)
 				}
 			})
 		}
@@ -40,29 +60,42 @@ export function MatchList() {
 	return (
 		<>
 			<Header />
-			<NewMatch key="new-match-button" />
-			<Grid
-				key="match-list"
-				className="match-list-container"
-				w="fit-content"
-				m="0 auto"
-				pt="100px"
-				pb="75px"
-				gap="2rem"
+			<NewMatch
+				key="new-match-button"
+				setTabIndex={setTabIndex}
+				forceUpdate={forceUpdate}
+			/>
+			<Tabs
+				index={tabIndex}
+				onChange={setTabIndex}
+				position="fixed"
+				w="100%"
+				h="calc(100% - 55px)"
+				mt="55px"
+				isFitted
+				variant="line"
 			>
-				{matchList.map((match, i, arr) => {
-					if (i < arr.length - 1) {
-						return (
-							<React.Fragment key={i + "-fragment"}>
-								<MatchCard key={match._id} match={match} />
-								<Divider key={i + "-divider"} />
-							</React.Fragment>
-						)
-					} else {
-						return <MatchCard key={match._id} match={match} />
-					}
-				})}
-			</Grid>
+				<TabList>
+					<Tab>Ongoing</Tab>
+					<Tab>Finished</Tab>
+				</TabList>
+				<TabPanels h="100%" pb="6rem" overflowX="hidden" overflowY="scroll">
+					<TabPanel>
+						{matchList.ongoing.length === 0 && loading === false ? (
+							<NotFound />
+						) : (
+							<List matchList={matchList.ongoing} loading={loading} />
+						)}
+					</TabPanel>
+					<TabPanel>
+						{matchList.finished.length === 0 && loading === false ? (
+							<NotFound />
+						) : (
+							<List matchList={matchList.finished} loading={loading} />
+						)}
+					</TabPanel>
+				</TabPanels>
+			</Tabs>
 		</>
 	)
 }

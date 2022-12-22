@@ -7,15 +7,16 @@ import { useMatchContext } from "../../context/MatchContext/MatchContext"
 import { ScoreBar } from "./_components/ScoreBar/ScoreBar"
 import { Controls } from "./_components/Controls/Controls"
 import { getMatch } from "../../utils/api/api"
-import { getUsernameFromJWT } from "../../utils/jwt/jwt"
 import { getScores } from "../../utils/misc/misc"
 import { Loading } from "./_components/Loading/Loading"
+import { handleEvents } from "./Match-utils"
+import { AnimatedEventsContainer } from "./_components/AnimatedEventsContainer/AnimatedEventsContainer"
 
 export function Match() {
 	const [loading, setLoading] = useState<boolean>(true)
 	const [token, setToken] = useState<string | null>(null)
 	const [controlsDisabled, setControlsDisabled] = useState<boolean>(false)
-	// const [eventSource, setEventSource] = useState<EventSourcePolyfill>()
+	const [eventSource, setEventSource] = useState<EventSourcePolyfill>()
 
 	const { matchId } = useParams()
 	const { matchContext, setMatchContext, updateScore } = useMatchContext()
@@ -36,7 +37,7 @@ export function Match() {
 				return
 			}
 
-			setMatchContext({ ...matchContext, matchId })
+			setMatchContext((prevState) => ({ ...prevState, matchId }))
 
 			const localToken = localStorage.getItem("token")
 
@@ -53,14 +54,14 @@ export function Match() {
 
 				const scores = getScores(data.turns)
 
-				setMatchContext({
-					...matchContext,
+				setMatchContext((prevState) => ({
+					...prevState,
 					players: {
 						"0": { score: scores.user1, username: data.user1.username },
 						"1": { score: scores.user2, username: data.user2.username }
 					},
 					currentTurn
-				})
+				}))
 
 				console.log(data)
 			}
@@ -82,56 +83,27 @@ export function Match() {
 
 		const sse = new EventSourcePolyfill(
 			`${import.meta.env.VITE_API_URL}/matches/${matchId}/subscribe`,
-			{ headers: { Authorization: `Bearer ${token}` } }
+			{
+				headers: { Authorization: `Bearer ${token}` },
+				heartbeatTimeout: 600000
+			}
 		)
 
-		sse.onmessage = (ev) => {
-			const event: any = JSON.parse(ev.data)
+		setEventSource(sse)
 
-			if (Array.isArray(event)) {
-				return
-			}
+		sse.onmessage = (events) =>
+			handleEvents({
+				events,
+				sse,
+				token,
+				setControlsDisabled,
+				matchContext,
+				setMatchContext,
+				updateScore
+			})
 
-			switch (event.type) {
-				case "PLAYER1_JOIN":
-					console.info("Player 1 joined.")
-					break
-				case "PLAYER2_JOIN":
-					console.info("Player 2 joined.")
-					break
-				case "NEW_TURN":
-					console.info(`New turn: ${event.payload.turnId}`)
-					setMatchContext({
-						...matchContext,
-						currentTurn: event.payload.turnId
-					})
-					break
-				case "TURN_ENDED":
-					const { winner, newTurnId } = event.payload
-					console.info(`Turn ${newTurnId - 1} ended.`)
-					updateScore(winner)
-					setControlsDisabled(false)
-					break
-				case "PLAYER1_MOVED":
-					console.info("Player 1 moved.")
-					if (getUsernameFromJWT(token) === matchContext.players[0].username) {
-						setControlsDisabled(true)
-					}
-					break
-				case "PLAYER2_MOVED":
-					console.info("Player 2 moved.")
-					if (getUsernameFromJWT(token) === matchContext.players[1].username) {
-						setControlsDisabled(true)
-					}
-					break
-				case "MATCH_ENDED":
-					console.info("Match ended.")
-					break
-			}
-		}
-
-		sse.onerror = (event) => {
-			console.log(event)
+		sse.onerror = (error) => {
+			console.log(error)
 			sse.close()
 		}
 	}, [token])
@@ -156,6 +128,7 @@ export function Match() {
 					exit={{ opacity: 0 }}
 				>
 					<ScoreBar />
+					{/* {eventSource && <AnimatedEventsContainer sse={eventSource} />} */}
 					<Controls disabled={controlsDisabled} />
 				</motion.div>
 			)}

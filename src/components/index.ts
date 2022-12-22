@@ -9,6 +9,7 @@ export type {
 	IUser
 } from "./MatchCard/MatchCard-types"
 export { NewMatch } from "./NewMatch/NewMatch"
+export { NotFound } from "./NotFound/NotFound"
 export { PulseBadge } from "./PulseBadge/PulseBadge"
 export type {
 	IPulseBadgeProps,

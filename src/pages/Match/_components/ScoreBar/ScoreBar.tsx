@@ -18,8 +18,8 @@ export function ScoreBar() {
 			justifyItems="center"
 			alignItems="center"
 		>
-			<BoxWithBgColor player={1} fontSize="1.2rem">
-				{players[0].username}
+			<BoxWithBgColor fontSize="1.2rem">
+				{players[0].username.toUpperCase()}
 			</BoxWithBgColor>
 			<Grid
 				templateColumns="repeat(3, 1fr)"
@@ -39,8 +39,8 @@ export function ScoreBar() {
 				<Text userSelect="none">-</Text>
 				<Text userSelect="none">{players[1].score}</Text>
 			</Grid>
-			<BoxWithBgColor player={2} fontSize="1.2rem">
-				{players[1].username}
+			<BoxWithBgColor fontSize="1.2rem">
+				{players[1].username.toUpperCase()}
 			</BoxWithBgColor>
 		</Grid>
 	)
