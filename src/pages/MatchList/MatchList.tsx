@@ -6,6 +6,7 @@ import { getMatchStatus, useForceUpdate } from "../../utils/misc/misc"
 import { Header, IMatch, NewMatch, NotFound } from "../../components"
 import { getMatchList } from "../../utils/api/api"
 import { List } from "./_components/List/List"
+import { AnimatePresence } from "framer-motion"
 
 export function MatchList() {
 	const [loading, setLoading] = useState<boolean>(true)
@@ -58,7 +59,7 @@ export function MatchList() {
 	}, [])
 
 	return (
-		<>
+		<AnimatePresence>
 			<Header />
 			<NewMatch
 				key="new-match-button"
@@ -74,6 +75,7 @@ export function MatchList() {
 				mt="55px"
 				isFitted
 				variant="line"
+				isLazy
 			>
 				<TabList>
 					<Tab>Ongoing</Tab>
@@ -84,18 +86,28 @@ export function MatchList() {
 						{matchList.ongoing.length === 0 && loading === false ? (
 							<NotFound />
 						) : (
-							<List matchList={matchList.ongoing} loading={loading} />
+							<List
+								name="ongoingMatchList"
+								matchList={matchList.ongoing}
+								loading={loading}
+								animateFromLeft
+							/>
 						)}
 					</TabPanel>
 					<TabPanel>
 						{matchList.finished.length === 0 && loading === false ? (
 							<NotFound />
 						) : (
-							<List matchList={matchList.finished} loading={loading} />
+							<List
+								name="finishedMatchList"
+								matchList={matchList.finished}
+								loading={loading}
+								animateFromRight
+							/>
 						)}
 					</TabPanel>
 				</TabPanels>
 			</Tabs>
-		</>
+		</AnimatePresence>
 	)
 }
