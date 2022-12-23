@@ -1,4 +1,5 @@
 import { MessageEvent, EventSourcePolyfill } from "event-source-polyfill"
+import { NavigateFunction } from "react-router-dom"
 import { Dispatch, SetStateAction } from "react"
 
 import { IMatchState } from "../../context/MatchContext/MatchContext-types"
@@ -11,4 +12,5 @@ export interface IHandleEventsParams {
 	matchContext: IMatchState
 	setMatchContext: Dispatch<SetStateAction<IMatchState>>
 	updateScore: (user: "user1" | "user2") => void
+	navigate: NavigateFunction
 }

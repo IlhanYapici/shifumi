@@ -20,14 +20,14 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 
 	const onClick = async (action: "rock" | "paper" | "scissors") => {
 		if (!matchId) {
-			console.log("matchId is null")
+			console.info("matchId is null")
 			return
 		}
 
 		const token = localStorage.getItem("token")
 
 		if (!token) {
-			console.log("token is null")
+			console.info("token is null")
 			return
 		}
 

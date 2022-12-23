@@ -1,7 +1,7 @@
 import { EventSourcePolyfill } from "event-source-polyfill"
-import { AnimatePresence, motion } from "framer-motion"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
 import { useMatchContext } from "../../context/MatchContext/MatchContext"
 import { ScoreBar } from "./_components/ScoreBar/ScoreBar"
@@ -18,10 +18,9 @@ export function Match() {
 	const [controlsDisabled, setControlsDisabled] = useState<boolean>(false)
 	const [eventSource, setEventSource] = useState<EventSourcePolyfill>()
 
-	const { matchId } = useParams()
 	const { matchContext, setMatchContext, updateScore } = useMatchContext()
-
-	// ["PLAYER_JOIN", "NEW_TURN", "TURN_ENDED", "PLAYER_MOVED", "MATCH_ENDED"]
+	const { matchId } = useParams()
+	const navigate = useNavigate()
 
 	const defaultDelay = 2000
 
@@ -47,23 +46,21 @@ export function Match() {
 			}
 
 			const resCallback = (data: any) => {
+				const { turns, user1, user2 } = data
 				setToken(localToken)
 
-				const currentTurn =
-					data.turns.length > 0 ? getCurrentTurn(data.turns) : 1
+				const currentTurn = turns.length > 0 ? getCurrentTurn(turns) : 1
 
-				const scores = getScores(data.turns)
+				const scores = getScores({ turns })
 
 				setMatchContext((prevState) => ({
 					...prevState,
 					players: {
-						"0": { score: scores.user1, username: data.user1.username },
-						"1": { score: scores.user2, username: data.user2.username }
+						"0": { score: scores.user1, username: user1.username },
+						"1": { score: scores.user2, username: user2.username }
 					},
 					currentTurn
 				}))
-
-				console.log(data)
 			}
 
 			await getMatch({ matchId: matchId, token: localToken, resCallback })
@@ -99,7 +96,8 @@ export function Match() {
 				setControlsDisabled,
 				matchContext,
 				setMatchContext,
-				updateScore
+				updateScore,
+				navigate
 			})
 
 		sse.onerror = (error) => {
