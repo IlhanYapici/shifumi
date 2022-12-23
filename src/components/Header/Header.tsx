@@ -58,7 +58,7 @@ export function Header() {
 						colorScheme="red"
 						fontSize="1.25rem"
 						borderRadius="50%"
-						variant="outline"
+						variant="solid"
 						onClick={logout}
 					/>
 				</Tooltip>
