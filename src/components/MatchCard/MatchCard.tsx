@@ -11,7 +11,7 @@ export function MatchCard(props: IMatchCardProps) {
 	const { match } = props
 
 	const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: false })
-	const matchStatus = getMatchStatus(match)
+	const matchStatus = getMatchStatus({ match })
 
 	return (
 		<Card

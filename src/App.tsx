@@ -6,6 +6,7 @@ import { getUsernameFromJWT } from "./utils/jwt/jwt"
 import { ThemeButton } from "./components"
 
 import "./App.css"
+import { AnimatePresence } from "framer-motion"
 
 function App() {
 	const {
@@ -31,7 +32,9 @@ function App() {
 
 	return (
 		<div className="App">
-			<Outlet />
+			<AnimatePresence>
+				<Outlet />
+			</AnimatePresence>
 		</div>
 	)
 }

@@ -109,10 +109,15 @@ export function Match() {
 	}, [token])
 
 	return (
-		<AnimatePresence>
+		<motion.div
+			key="matchPageContainer"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+		>
 			{loading && (
 				<motion.div
-					key="progressBar"
+					key="matchLoadginBar"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
@@ -132,6 +137,6 @@ export function Match() {
 					<Controls disabled={controlsDisabled} />
 				</motion.div>
 			)}
-		</AnimatePresence>
+		</motion.div>
 	)
 }

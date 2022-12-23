@@ -26,8 +26,8 @@ import { BoxWithBgColor } from "../../../BoxWithBgColor/BoxWithBgColor"
 export function MatchStatus({ match }: { match: IMatch }) {
 	const navigate = useNavigate()
 
-	const matchStatus: TMatchStatus = getMatchStatus(match)
-	const scores = getScores(match.turns)
+	const matchStatus: TMatchStatus = getMatchStatus({ match })
+	const scores = getScores({ turns: match.turns })
 
 	const joinMatch = () => {
 		navigate(`/matches/${match._id}`)
@@ -55,7 +55,7 @@ export function MatchStatus({ match }: { match: IMatch }) {
 					}
 					userSelect="none"
 				>
-					{capitalize(getMatchStatus(match))}
+					{capitalize(matchStatus)}
 				</Badge>
 			</CardHeader>
 			<CardBody display="flex" alignItems="center" position="relative">

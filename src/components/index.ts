@@ -1,7 +1,6 @@
 export { ActionButton } from "./ActionButton/ActionButton"
 export { BoxWithBgColor } from "./BoxWithBgColor/BoxWithBgColor"
 export { Header } from "./Header/Header"
-export { Logo } from "./Logo/Logo"
 export { MatchCard } from "./MatchCard/MatchCard"
 export type {
 	IMatchCardProps,

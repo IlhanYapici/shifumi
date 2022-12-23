@@ -1,12 +1,12 @@
 import { Tabs, Tab, TabList, TabPanels, TabPanel } from "@chakra-ui/react"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { motion } from "framer-motion"
 
 import { getMatchStatus, useForceUpdate } from "../../utils/misc/misc"
 import { Header, IMatch, NewMatch, NotFound } from "../../components"
 import { getMatchList } from "../../utils/api/api"
 import { List } from "./_components/List/List"
-import { AnimatePresence } from "framer-motion"
 
 export function MatchList() {
 	const [loading, setLoading] = useState<boolean>(true)
@@ -35,7 +35,7 @@ export function MatchList() {
 					let ongoing: IMatch[] = []
 
 					data.forEach((match) => {
-						if (getMatchStatus(match) === "finished") {
+						if (getMatchStatus({ match }) === "finished") {
 							finished.push(match)
 						} else {
 							ongoing.push(match)
@@ -59,10 +59,15 @@ export function MatchList() {
 	}, [])
 
 	return (
-		<AnimatePresence>
+		<motion.div
+			key="matchListPage"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+		>
 			<Header />
 			<NewMatch
-				key="new-match-button"
+				key="join-match-button"
 				setTabIndex={setTabIndex}
 				forceUpdate={forceUpdate}
 			/>
@@ -108,6 +113,6 @@ export function MatchList() {
 					</TabPanel>
 				</TabPanels>
 			</Tabs>
-		</AnimatePresence>
+		</motion.div>
 	)
 }

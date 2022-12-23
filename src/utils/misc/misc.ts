@@ -1,8 +1,24 @@
 import { useState } from "react"
 
-import { IMatch } from "../../components"
+import {
+	IGetScoresParams,
+	IGetMatchStatusParams,
+	IGetAnimationVariantsParams,
+	IVariant
+} from "./misc-types"
+import {
+	DEFAULT_DELAY_CHILDREN,
+	DEFAULT_STAGGER_CHILDREN,
+	FADE_VARIANT,
+	SLIDE_DOWN_VARIANT,
+	SLIDE_LEFT_VARIANT,
+	SLIDE_RIGHT_VARIANT,
+	SLIDE_UP_VARIANT
+} from "./misc-constants"
 
-export function getScores(turns: any[]) {
+export function getScores(params: IGetScoresParams) {
+	const { turns } = params
+
 	let score = {
 		user1: 0,
 		user2: 0
@@ -22,7 +38,11 @@ export function getScores(turns: any[]) {
 	return score
 }
 
-export function getMatchStatus(match: IMatch): "open" | "ongoing" | "finished" {
+export function getMatchStatus(
+	params: IGetMatchStatusParams
+): "open" | "ongoing" | "finished" {
+	const { match } = params
+
 	if (match.user1 && match.user2) {
 		if (match.turns.length >= 3) {
 			return "finished"
@@ -45,4 +65,72 @@ export function uppercase(str: string) {
 export function useForceUpdate() {
 	const [, setValue] = useState<number>(0)
 	return () => setValue((value) => ++value)
+}
+
+export function getAnimationVariants(
+	params: IGetAnimationVariantsParams
+): IVariant {
+	const {
+		type,
+		staggerChildren = DEFAULT_STAGGER_CHILDREN,
+		delayChildren = DEFAULT_DELAY_CHILDREN
+	} = params
+
+	switch (type) {
+		case "fade":
+			return {
+				...FADE_VARIANT,
+				container: {
+					...FADE_VARIANT.container,
+					show: {
+						...FADE_VARIANT.container.show,
+						transition: { delayChildren, staggerChildren }
+					}
+				}
+			}
+		case "fromTop":
+			return {
+				...SLIDE_UP_VARIANT,
+				container: {
+					...SLIDE_UP_VARIANT.container,
+					show: {
+						...SLIDE_UP_VARIANT.container.show,
+						transition: { delayChildren, staggerChildren }
+					}
+				}
+			}
+		case "fromBottom":
+			return {
+				...SLIDE_DOWN_VARIANT,
+				container: {
+					...SLIDE_DOWN_VARIANT.container,
+					show: {
+						...SLIDE_DOWN_VARIANT.container.show,
+						transition: { delayChildren, staggerChildren }
+					}
+				}
+			}
+		case "fromLeft":
+			return {
+				...SLIDE_LEFT_VARIANT,
+				container: {
+					...SLIDE_LEFT_VARIANT.container,
+					show: {
+						...SLIDE_LEFT_VARIANT.container.show,
+						transition: { delayChildren, staggerChildren }
+					}
+				}
+			}
+		case "fromRight":
+			return {
+				...SLIDE_RIGHT_VARIANT,
+				container: {
+					...SLIDE_RIGHT_VARIANT.container,
+					show: {
+						...SLIDE_RIGHT_VARIANT.container.show,
+						transition: { delayChildren, staggerChildren }
+					}
+				}
+			}
+	}
 }

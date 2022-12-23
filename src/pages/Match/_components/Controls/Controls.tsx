@@ -145,7 +145,7 @@ export function Controls({ disabled = false }: { disabled?: boolean }) {
 			{children.map((child, i) => {
 				if (i % 2 === 0) {
 					return (
-						<motion.div key={"button" + i} variants={variantsChildren}>
+						<motion.div key={child.key} variants={variantsChildren}>
 							{child}
 						</motion.div>
 					)

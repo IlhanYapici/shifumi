@@ -10,7 +10,6 @@ import { AiOutlineLogout as LogoutIcon } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 
 import { useUserContext } from "../../context/UserContext/UserContext"
-import { Logo } from "../Logo/Logo"
 import { ThemeButton } from "../ThemeButton/ThemeButton"
 
 export function Header() {
@@ -31,6 +30,7 @@ export function Header() {
 			top="0"
 			h="55px"
 			w="100%"
+			p="0 1rem"
 			display="flex"
 			justifyContent="space-between"
 			alignItems="center"
@@ -42,14 +42,13 @@ export function Header() {
 			borderBottomColor={useColorModeValue("white", "gray.800")}
 			borderBottomWidth="1px"
 		>
-			<Logo />
-			<Box display="flex" gap="1rem" pr="1rem" alignItems="center">
-				<Box display="flex" gap="0.75rem" alignItems="center">
-					<Text>Connected as :</Text>
-					<Text fontWeight="bold" textTransform="uppercase">
-						{username}
-					</Text>
-				</Box>
+			<Text fontFamily="Anton" fontSize="4xl">
+				SHIFUMI
+			</Text>
+			<Box display="flex" gap="1rem" alignItems="center">
+				<Text fontWeight="bold" textTransform="uppercase">
+					{username}
+				</Text>
 				<Divider orientation="vertical" h="2rem" />
 				<ThemeButton />
 				<Tooltip label="Logout">
@@ -60,7 +59,7 @@ export function Header() {
 						fontSize="1.25rem"
 						borderRadius="50%"
 						variant="outline"
-						onClick={() => logout()}
+						onClick={logout}
 					/>
 				</Tooltip>
 			</Box>

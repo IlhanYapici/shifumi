@@ -1,42 +1,33 @@
 import { Progress, Center, Divider } from "@chakra-ui/react"
-import { Variants, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { Fragment } from "react"
 
 import { MatchCard } from "../../../../components"
 import { TListProps } from "./List-types"
+import { getAnimationVariants } from "../../../../utils/misc/misc"
+import { IVariant } from "../../../../utils/misc/misc-types"
 
 export function List(props: TListProps) {
 	const { matchList, loading, name, animateFromLeft, animateFromRight } = props
 
 	const reversedMatchList = matchList.slice(0).reverse()
 
-	const containerVariants: Variants = {
-		hidden: { opacity: 0 },
-		show: {
-			opacity: 1,
-			transition: {
-				staggerChildren: 0.09
-			}
-		}
-	}
-
-	let childrenVariants: Variants
+	let animationVariants: IVariant
 
 	if (animateFromLeft) {
-		childrenVariants = {
-			hidden: { opacity: 0, translateX: "-100%" },
-			show: { opacity: 1, translateX: 0 }
-		}
+		animationVariants = getAnimationVariants({
+			type: "fromLeft",
+			staggerChildren: 0.075,
+			delayChildren: 0.1
+		})
 	} else if (animateFromRight) {
-		childrenVariants = {
-			hidden: { opacity: 0, translateX: "100%" },
-			show: { opacity: 1, translateX: 0 }
-		}
+		animationVariants = getAnimationVariants({
+			type: "fromRight",
+			staggerChildren: 0.075,
+			delayChildren: 0.1
+		})
 	} else {
-		childrenVariants = {
-			hidden: { opacity: 0, translateY: "100%" },
-			show: { opacity: 1, translateY: 0 }
-		}
+		animationVariants = getAnimationVariants({ type: "fromBottom" })
 	}
 
 	return (
@@ -75,7 +66,7 @@ export function List(props: TListProps) {
 					paddingTop: "1rem",
 					gap: "2rem"
 				}}
-				variants={containerVariants}
+				variants={animationVariants.container}
 				initial="hidden"
 				animate="show"
 			>
@@ -83,23 +74,20 @@ export function List(props: TListProps) {
 					reversedMatchList.map((match, i, arr) => {
 						if (i < arr.length - 1) {
 							return (
-								<Fragment key={match._id + "-fragment"}>
-									<motion.div
-										key={match._id + "-container"}
-										variants={childrenVariants}
-									>
-										<MatchCard key={match._id} match={match} />
+								<Fragment key={match._id}>
+									<motion.div variants={animationVariants.children}>
+										<MatchCard match={match} />
 									</motion.div>
-									<Divider key={match._id + "-divider"} />
+									<Divider />
 								</Fragment>
 							)
 						} else {
 							return (
 								<motion.div
-									key={match._id + "-container"}
-									variants={childrenVariants}
+									key={match._id}
+									variants={animationVariants.children}
 								>
-									<MatchCard key={match._id} match={match} />
+									<MatchCard match={match} />
 								</motion.div>
 							)
 						}
