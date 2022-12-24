@@ -1,17 +1,11 @@
 import { Box, Image, useColorMode } from "@chakra-ui/react"
-import { Outlet, useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { Outlet } from "react-router-dom"
 
 import darkBgImg from "../../assets/auth-dark-wallpaper.jpg"
 import lightBgImg from "../../assets/auth-light-wallpaper.jpg"
 
 export function Auth() {
 	const { colorMode } = useColorMode()
-	const navigate = useNavigate()
-
-	useEffect(() => {
-		navigate("login")
-	}, [])
 
 	return (
 		<Box h="100%" w="100%" position="relative" display="flex">

@@ -172,7 +172,7 @@ export function MatchStatus({ match }: { match: IMatch }) {
 					}
 				>
 					<Button
-						disabled={matchStatus === "finished" ? true : false}
+						disabled={matchStatus === "ongoing" ? false : true}
 						ml="auto"
 						colorScheme="linkedin"
 						variant="ghost"

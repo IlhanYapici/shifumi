@@ -104,6 +104,8 @@ export function Match() {
 			console.log(error)
 			sse.close()
 		}
+
+		return () => sse.close()
 	}, [token])
 
 	return (

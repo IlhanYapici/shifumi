@@ -3,7 +3,6 @@ import { useEffect } from "react"
 
 import { useUserContext } from "./context/UserContext/UserContext"
 import { getUsernameFromJWT } from "./utils/jwt/jwt"
-import { ThemeButton } from "./components"
 
 import "./App.css"
 import { AnimatePresence } from "framer-motion"
@@ -20,7 +19,7 @@ function App() {
 		const token = localStorage.getItem("token")
 
 		if (token === null) {
-			navigate("/login")
+			navigate("/auth/login")
 		} else if (username === "") {
 			setUserContext({ username: getUsernameFromJWT(token) })
 		}
