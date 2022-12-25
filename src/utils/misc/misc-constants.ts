@@ -29,10 +29,12 @@ export const FADE_VARIANT: IVariant = {
 export const SLIDE_LEFT_VARIANT: IVariant = {
 	container: {
 		hidden: {
-			opacity: 0
+			opacity: 0,
+			x: "-100%"
 		},
 		show: {
 			opacity: 1,
+			x: 0,
 			transition: {
 				delayChildren: DEFAULT_STAGGER_CHILDREN,
 				staggerChildren: DEFAULT_DELAY_CHILDREN
@@ -54,10 +56,12 @@ export const SLIDE_LEFT_VARIANT: IVariant = {
 export const SLIDE_RIGHT_VARIANT: IVariant = {
 	container: {
 		hidden: {
-			opacity: 0
+			opacity: 0,
+			x: "100%"
 		},
 		show: {
 			opacity: 1,
+			x: 0,
 			transition: {
 				delayChildren: DEFAULT_STAGGER_CHILDREN,
 				staggerChildren: DEFAULT_DELAY_CHILDREN

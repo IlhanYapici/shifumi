@@ -1,4 +1,4 @@
-import { Grid } from "@chakra-ui/react"
+import { Grid, Text } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 import { useEffect } from "react"
 import {
@@ -40,14 +40,23 @@ export function AnimatedEventsContainer(props: IAnimatedEventsContainerProps) {
 	}, [])
 
 	return (
-		<Grid templateColumns="1fr 1fr">
+		<Grid
+			position="absolute"
+			top="0"
+			left="0"
+			w="100%"
+			h="100%"
+			templateColumns="1fr 1fr"
+			alignItems="center"
+			justifyItems="center"
+		>
 			<motion.div
 				key="user1IconAnimation"
 				variants={user1Variants.container}
 				initial="hidden"
 				animate="show"
 			>
-				{user1MoveIcon}
+				<Text fontSize="4rem">{user1MoveIcon}</Text>
 			</motion.div>
 			<motion.div
 				key="user2IconAnimation"
@@ -55,7 +64,7 @@ export function AnimatedEventsContainer(props: IAnimatedEventsContainerProps) {
 				initial="hidden"
 				animate="show"
 			>
-				{user2MoveIcon}
+				<Text fontSize="4rem">{user2MoveIcon}</Text>
 			</motion.div>
 		</Grid>
 	)
