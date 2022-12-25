@@ -13,23 +13,24 @@ export function MatchCard(props: IMatchCardProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: false })
 	const matchStatus = getMatchStatus({ match })
 
+	const statusHeight = matchStatus === "finished" ? "194px" : "234px"
+
 	return (
 		<Card
 			className="match-card-container"
 			position="relative"
-			minH="3xs"
 			minW="sm"
 			w="100%"
 			maxW="lg"
-			maxH="xs"
+			h="fit-content"
 			backgroundColor={useColorModeValue("gray.50", "gray.900")}
 			borderColor={useColorModeValue("white", "gray.800")}
 			borderWidth="1px"
 			overflow="hidden"
 		>
 			<motion.div
-				initial={{ height: "234px" }}
-				animate={{ height: isOpen ? "100%" : "234px" }}
+				initial={{ height: statusHeight }}
+				animate={{ height: isOpen ? "100%" : statusHeight }}
 			>
 				{matchStatus === "finished" && (
 					<TopButtons isOpen={isOpen} onOpen={onOpen} onClose={onClose} />

@@ -164,12 +164,8 @@ export function MatchStatus({ match }: { match: IMatch }) {
 					)}
 				</Grid>
 			</CardBody>
-			<CardFooter>
-				<Tooltip
-					label={
-						matchStatus === "finished" ? "The match is finished." : undefined
-					}
-				>
+			{matchStatus !== "finished" && (
+				<CardFooter>
 					<Button
 						disabled={matchStatus === "ongoing" ? false : true}
 						ml="auto"
@@ -179,8 +175,8 @@ export function MatchStatus({ match }: { match: IMatch }) {
 					>
 						Play
 					</Button>
-				</Tooltip>
-			</CardFooter>
+				</CardFooter>
+			)}
 		</Box>
 	)
 }

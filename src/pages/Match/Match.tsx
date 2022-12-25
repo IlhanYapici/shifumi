@@ -11,6 +11,7 @@ import { getScores } from "../../utils/misc/misc"
 import { Loading } from "./_components/Loading/Loading"
 import { handleEvents } from "./Match-utils"
 import { AnimatedEventsContainer } from "./_components/AnimatedEventsContainer/AnimatedEventsContainer"
+import { IMatch } from "../../components"
 
 export function Match() {
 	const [loading, setLoading] = useState<boolean>(true)
@@ -45,9 +46,13 @@ export function Match() {
 				return
 			}
 
-			const resCallback = (data: any) => {
-				const { turns, user1, user2 } = data
+			const resCallback = (match: IMatch) => {
+				const { turns, user1, user2 } = match
 				setToken(localToken)
+
+				if (Object.keys(match).includes("winner")) {
+					setControlsDisabled(true)
+				}
 
 				const currentTurn = turns.length > 0 ? getCurrentTurn(turns) : 1
 
@@ -56,8 +61,8 @@ export function Match() {
 				setMatchContext((prevState) => ({
 					...prevState,
 					players: {
-						user1: { score: scores.user1, username: user1.username },
-						user2: { score: scores.user2, username: user2.username }
+						user1: { score: scores.user1, username: user1!.username },
+						user2: { score: scores.user2, username: user2!.username }
 					},
 					currentTurn
 				}))
@@ -99,11 +104,6 @@ export function Match() {
 				updateScore,
 				navigate
 			})
-
-		sse.onerror = (error) => {
-			console.log(error)
-			sse.close()
-		}
 
 		return () => sse.close()
 	}, [token])
