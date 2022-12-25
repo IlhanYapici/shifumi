@@ -14,6 +14,7 @@ import { DEFAULT_MATCH_STATE } from "./Match-constants"
 import { Loading } from "./_components/Loading/Loading"
 import { getMatch } from "../../utils/api/api"
 import { IMatch } from "../../components"
+import { MatchEndedOverlay } from "./_components/MatchEndedOverlay/MatchEndedOverlay"
 
 export function Match() {
 	const [matchState, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_STATE)
@@ -121,8 +122,7 @@ export function Match() {
 					dispatch({ type: "SET_CONTROLS_DISABLED", payload: disabled }),
 				matchContext,
 				dispatchMatchState: dispatch,
-				dispatchMatchCtx,
-				navigate
+				dispatchMatchCtx
 			})
 
 		return () => sse.close()
@@ -131,6 +131,7 @@ export function Match() {
 	return (
 		<motion.div
 			key="matchPageContainer"
+			style={{ height: "100%" }}
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
@@ -145,7 +146,7 @@ export function Match() {
 					<Loading delay={500} />
 				</motion.div>
 			)}
-			{!matchState.loading && (
+			{!matchState.loading && !matchState.matchEnded && (
 				<motion.div
 					key="matchPage"
 					initial={{ opacity: 0 }}
@@ -162,6 +163,7 @@ export function Match() {
 					<Controls disabled={matchState.controlsDisabled} />
 				</motion.div>
 			)}
+			{matchState.matchEnded && <MatchEndedOverlay />}
 		</motion.div>
 	)
 }

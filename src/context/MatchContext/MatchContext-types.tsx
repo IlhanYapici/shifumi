@@ -25,10 +25,6 @@ export interface IMatchContextState {
 	}
 }
 
-// export interface IMatchContextReducerActions {
-// 	type: "SET_MATCH_ID" | "SET_CURRENT_TURN" | "SET_USER"
-// }
-
 export type TMatchContextReducerActions =
 	| {
 			type: "SET_MATCH_ID"

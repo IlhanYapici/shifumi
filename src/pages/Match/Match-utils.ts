@@ -24,6 +24,11 @@ export function matchReducer(state: IMatchState, action: TMatchReducerActions) {
 				...state,
 				displayAnimations: action.payload
 			} as IMatchState
+		case "SET_MATCH_ENDED":
+			return {
+				...state,
+				matchEnded: action.payload
+			} as IMatchState
 		case "SET_TOKEN":
 			return {
 				...state,
@@ -46,8 +51,7 @@ export async function handleEvents(params: IHandleEventsParams) {
 		token,
 		matchContext,
 		dispatchMatchState,
-		dispatchMatchCtx,
-		navigate
+		dispatchMatchCtx
 	} = params
 
 	const event: any = JSON.parse(events.data)
@@ -59,7 +63,6 @@ export async function handleEvents(params: IHandleEventsParams) {
 	switch (event.type) {
 		case "TURN_ENDED":
 			const { winner, newTurnId } = event.payload
-			console.info(`Turn ${newTurnId - 1} ended.`)
 
 			await getMatch({
 				matchId,
@@ -82,7 +85,9 @@ export async function handleEvents(params: IHandleEventsParams) {
 			})
 
 			dispatchMatchCtx({ type: "SET_CURRENT_TURN", payload: newTurnId })
-			dispatchMatchCtx({ type: "SET_USER", user: winner, field: "score" })
+			if (winner !== "draw") {
+				dispatchMatchCtx({ type: "SET_USER", user: winner, field: "score" })
+			}
 
 			setControlsDisabled(false)
 			break
@@ -97,13 +102,9 @@ export async function handleEvents(params: IHandleEventsParams) {
 			}
 			break
 		case "MATCH_ENDED":
-			console.info("Match ended.")
 			setControlsDisabled(true)
-			const t = setTimeout(() => {
-				navigate("/matches")
+			dispatchMatchState({ type: "SET_MATCH_ENDED", payload: true })
 
-				return () => clearTimeout(t)
-			}, 1000)
 			sse.close()
 			break
 	}

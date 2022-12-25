@@ -1,5 +1,4 @@
 import { MessageEvent, EventSourcePolyfill } from "event-source-polyfill"
-import { NavigateFunction } from "react-router-dom"
 import { Dispatch } from "react"
 
 import {
@@ -16,7 +15,6 @@ export interface IHandleEventsParams {
 	matchContext: IMatchContextState
 	dispatchMatchState: Dispatch<TMatchReducerActions>
 	dispatchMatchCtx: Dispatch<TMatchContextReducerActions>
-	navigate: NavigateFunction
 }
 
 type TMove = "rock" | "paper" | "scissors"
@@ -25,6 +23,7 @@ export interface IMatchState {
 	loading: boolean
 	controlsDisabled: boolean
 	displayAnimations: boolean
+	matchEnded: boolean
 	token: string | null
 	user1: TMove | null
 	user2: TMove | null
@@ -32,7 +31,11 @@ export interface IMatchState {
 
 export type TMatchReducerActions =
 	| {
-			type: "SET_LOADING" | "SET_CONTROLS_DISABLED" | "SET_DISPLAY_ANIMATIONS"
+			type:
+				| "SET_LOADING"
+				| "SET_CONTROLS_DISABLED"
+				| "SET_DISPLAY_ANIMATIONS"
+				| "SET_MATCH_ENDED"
 			payload: boolean
 	  }
 	| {
