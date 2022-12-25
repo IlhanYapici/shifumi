@@ -1,5 +1,5 @@
-import { Box, Image, useColorMode } from "@chakra-ui/react"
 import { Outlet } from "react-router-dom"
+import { Box, Image, useColorMode } from "@chakra-ui/react"
 
 import darkBgImg from "../../assets/auth-dark-wallpaper.jpg"
 import lightBgImg from "../../assets/auth-light-wallpaper.jpg"
