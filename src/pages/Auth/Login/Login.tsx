@@ -43,6 +43,7 @@ export function Login() {
 				const t = setTimeout(() => {
 					dispatch({ type: "SET_LOADING", payload: false })
 					navigate("/matches")
+
 					return () => clearTimeout(t)
 				}, 1000)
 

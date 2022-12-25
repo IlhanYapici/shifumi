@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
 	Box,
@@ -29,7 +29,7 @@ export function Register() {
 		registerReducer,
 		DEFAULT_REGISTER_STATE
 	)
-
+	const navigate = useNavigate()
 	const animationVariants = getAnimationVariants({ type: "fromBottom" })
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,9 +42,11 @@ export function Register() {
 		) {
 			const loginResCallback = (data: any) => {
 				dispatch({ type: "SET_ERROR", payload: null })
+				localStorage.setItem("token", data.token)
 
 				const t = setTimeout(() => {
 					dispatch({ type: "SET_LOADING", payload: false })
+					navigate("/matches")
 
 					return () => clearTimeout(t)
 				}, 1000)
@@ -240,13 +242,14 @@ export function Register() {
 						</motion.div>
 						<motion.div
 							key="register-form-button"
+							style={{ display: "flex", justifyContent: "center" }}
 							variants={animationVariants.children}
 						>
 							<Button
 								disabled={!getFormValidity()}
+								isLoading={registerState.loading}
 								type="submit"
 								colorScheme="linkedin"
-								display="block"
 								p="0 1.5rem"
 								m="2rem auto 0"
 							>
