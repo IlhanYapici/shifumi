@@ -20,12 +20,9 @@ type TFormFields = "username" | "password"
 export type TLoginReducerAction =
 	| {
 			type: "TOGGLE_PASSWORD"
-			field?: never
-			payload?: never
 	  }
 	| {
 			type: "SET_ERROR" | "SET_LOADING"
-			field?: never
 			payload: boolean
 	  }
 	| {

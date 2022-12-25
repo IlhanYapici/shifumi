@@ -86,7 +86,7 @@ export function MatchList() {
 					<Tab>Ongoing</Tab>
 					<Tab>Finished</Tab>
 				</TabList>
-				<TabPanels h="100%" pb="6rem" overflowX="hidden" overflowY="scroll">
+				<TabPanels h="100%" overflowX="hidden" overflowY="scroll">
 					<TabPanel h="100%">
 						{matchList.ongoing.length === 0 && loading === false ? (
 							<NotFound />

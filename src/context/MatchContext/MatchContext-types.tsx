@@ -5,12 +5,12 @@ export interface IMatchProviderProps {
 }
 
 export interface IMatchContext {
-	matchContext: IMatchState
-	setMatchContext: React.Dispatch<React.SetStateAction<IMatchState>>
+	matchContext: IMatchContextState
+	setMatchContext: React.Dispatch<React.SetStateAction<IMatchContextState>>
 	updateScore: (params: IUpdateScoreParams) => void
 }
 
-export interface IMatchState {
+export interface IMatchContextState {
 	matchId: string | null
 	currentTurn: number
 	players: {

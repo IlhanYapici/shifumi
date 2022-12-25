@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react"
 
 import {
 	IMatchProviderProps,
-	IMatchState,
+	IMatchContextState,
 	IMatchContext,
 	IUpdateScoreParams
 } from "./MatchContext-types"
@@ -10,7 +10,7 @@ import {
 export const MatchContext = createContext({} as IMatchContext)
 
 export function MatchProvider({ children }: IMatchProviderProps) {
-	const [matchContext, setMatchContext] = useState<IMatchState>({
+	const [matchContext, setMatchContext] = useState<IMatchContextState>({
 		matchId: null,
 		currentTurn: 1,
 		players: {

@@ -64,6 +64,7 @@ export function List(props: TListProps) {
 					maxWidth: "512px",
 					margin: "0 auto",
 					paddingTop: "1rem",
+					paddingBottom: "7rem",
 					gap: "2rem"
 				}}
 				variants={animationVariants.container}
