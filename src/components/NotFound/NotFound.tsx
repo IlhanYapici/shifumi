@@ -8,7 +8,7 @@ import {
 
 export function NotFound() {
 	return (
-		<Center h="100%" borderRadius="1rem">
+		<Center h="100%" w="100%">
 			<Alert
 				status="info"
 				variant="subtle"
@@ -19,6 +19,7 @@ export function NotFound() {
 				h="200px"
 				w="fit-content"
 				minW="466.5px"
+				borderRadius="1rem"
 			>
 				<AlertIcon />
 				<AlertTitle>No match found.</AlertTitle>
