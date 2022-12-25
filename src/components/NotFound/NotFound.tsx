@@ -17,8 +17,8 @@ export function NotFound() {
 				justifyContent="center"
 				textAlign="center"
 				h="200px"
-				w="fit-content"
-				minW="466.5px"
+				w="100%"
+				maxW="466.5px"
 				borderRadius="1rem"
 			>
 				<AlertIcon />
