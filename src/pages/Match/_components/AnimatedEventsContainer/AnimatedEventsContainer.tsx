@@ -55,6 +55,7 @@ export function AnimatedEventsContainer(props: IAnimatedEventsContainerProps) {
 				variants={user1Variants.container}
 				initial="hidden"
 				animate="show"
+				exit={{ opacity: 0 }}
 			>
 				<Text fontSize="4rem">{user1MoveIcon}</Text>
 			</motion.div>
@@ -63,6 +64,7 @@ export function AnimatedEventsContainer(props: IAnimatedEventsContainerProps) {
 				variants={user2Variants.container}
 				initial="hidden"
 				animate="show"
+				exit={{ opacity: 0 }}
 			>
 				<Text fontSize="4rem">{user2MoveIcon}</Text>
 			</motion.div>

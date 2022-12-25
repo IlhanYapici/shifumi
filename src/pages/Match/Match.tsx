@@ -1,6 +1,6 @@
 import { EventSourcePolyfill } from "event-source-polyfill"
-import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useReducer } from "react"
+import { useParams } from "react-router-dom"
 import { motion } from "framer-motion"
 
 import { AnimatedEventsContainer } from "./_components/AnimatedEventsContainer/AnimatedEventsContainer"
@@ -22,7 +22,6 @@ export function Match() {
 	const { matchContext, dispatchMatchCtx } = useMatchContext()
 	const { userContext } = useUserContext()
 	const { matchId } = useParams()
-	const navigate = useNavigate()
 
 	const getCurrentTurn = (turns: any[]) => {
 		return Object.keys(turns[turns.length - 1]).includes("winner")
