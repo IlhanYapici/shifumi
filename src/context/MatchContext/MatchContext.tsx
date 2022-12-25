@@ -16,13 +16,6 @@ export function MatchProvider({ children }: IMatchProviderProps) {
 		DEFAULT_MATCH_CONTEXT
 	)
 
-	const updateScore = (params: IUpdateScoreParams) => {
-		const { user, newTurnId } = params
-
-		dispatchMatchCtx({ type: "SET_CURRENT_TURN", payload: newTurnId })
-		dispatchMatchCtx({ type: "SET_USER", user, field: "score" })
-	}
-
 	const ctx: IMatchContext = useMemo(
 		() => ({
 			matchContext,
