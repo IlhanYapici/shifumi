@@ -19,8 +19,10 @@ export type TMatchListReducerActions =
 			payload: number
 	  }
 	| {
-			type: "SET_MATCH_LIST"
-			field: "finished" | "ongoing"
+			type: "SET_FINISHED"
 			payload: IMatch[]
 	  }
-//TODO: split SET_MATCH_LIST to SET_FINISHED and SET_ONGOING
+	| {
+			type: "SET_ONGOING"
+			payload: IMatch[]
+	  }

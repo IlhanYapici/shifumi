@@ -15,11 +15,20 @@ export function matchListReducer(
 				...state,
 				tabIndex: action.payload
 			} as IMatchListState
-		case "SET_MATCH_LIST":
+		case "SET_FINISHED":
 			return {
 				...state,
 				matchList: {
-					[action.field]: action.payload
+					...state.matchList,
+					finished: action.payload
+				}
+			} as IMatchListState
+		case "SET_ONGOING":
+			return {
+				...state,
+				matchList: {
+					...state.matchList,
+					ongoing: action.payload
 				}
 			} as IMatchListState
 	}

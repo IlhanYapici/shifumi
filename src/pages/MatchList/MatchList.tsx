@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 
 import { getMatchStatus, useForceUpdate } from "../../utils/misc/misc"
-import { Header, IMatch, NewMatch, NotFound } from "../../components"
+import { IMatch, NewMatch, NotFound } from "../../components"
+import Header from "../../components/Header/Header"
 import { getMatchList } from "../../utils/api/api"
 import { List } from "./_components/List/List"
 import { matchListReducer } from "./MatchList-utils"
@@ -13,32 +14,40 @@ import { IStats } from "../../components/Header/Header-types"
 import { useUserContext } from "../../context/UserContext/UserContext"
 
 export function MatchList() {
+	const { userContext } = useUserContext()
+	const navigate = useNavigate()
+	const forceUpdate = useForceUpdate()
 	const [matchListState, dispatch] = useReducer(
 		matchListReducer,
 		DEFAULT_MATCH_LIST_STATE
 	)
-	const { userContext } = useUserContext()
-	const navigate = useNavigate()
-	const forceUpdate = useForceUpdate()
 
-	// const getStats = useCallback(() => {
-	// 	const finishedMatches = matchListState.matchList.finished
+	const getStats = useCallback(() => {
+		const finishedMatches = matchListState.matchList.finished
 
-	// 	let stats: IStats = {
-	// 		matchFinished: finishedMatches.length,
-	// 		matchWon: 0,
-	// 		matchLost: 0,
-	// 		winRate: 0
-	// 	}
+		let stats: IStats = {
+			matchFinished: finishedMatches.length,
+			matchWon: 0,
+			matchLost: 0,
+			winRate: 0
+		}
 
-	// 	finishedMatches.forEach(match => {
-	// 		if(match.winner !== null && userContext.username === match.winner) {
-	// 			stats.matchWon++
-	// 		}
-	// 	})
+		finishedMatches.forEach((match) => {
+			if (match.winner) {
+				if (userContext.username === match.winner!.username) {
+					stats.matchWon++
+				} else if (userContext.username !== match.winner!.username) {
+					stats.matchLost++
+				}
+			}
+		})
 
-	// 	return stats
-	// }, [matchListState.matchList.finished])
+		if (stats.matchWon > 0) {
+			stats.winRate = (stats.matchWon / stats.matchFinished) * 100
+		}
+
+		return stats
+	}, [matchListState.matchList.finished])
 
 	useEffect(() => {
 		const token = localStorage.getItem("token")
@@ -64,13 +73,11 @@ export function MatchList() {
 					})
 
 					dispatch({
-						type: "SET_MATCH_LIST",
-						field: "finished",
+						type: "SET_FINISHED",
 						payload: finished
 					})
 					dispatch({
-						type: "SET_MATCH_LIST",
-						field: "ongoing",
+						type: "SET_ONGOING",
 						payload: ongoing
 					})
 					dispatch({ type: "SET_LOADING", payload: false })
@@ -80,17 +87,11 @@ export function MatchList() {
 
 		fetchMatchList()
 
-		const id = setInterval(() => fetchMatchList(), 10000)
 		return () => {
 			const controller = new AbortController()
 			controller.abort()
-			clearInterval(id)
 		}
 	}, [])
-
-	useEffect(() => {
-		console.log(matchListState.matchList)
-	}, [matchListState.matchList])
 
 	return (
 		<motion.div
@@ -99,7 +100,7 @@ export function MatchList() {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 		>
-			<Header />
+			<Header getStats={getStats} />
 			<NewMatch
 				key="join-match-button"
 				setTabIndex={(index) =>

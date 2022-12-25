@@ -2,7 +2,7 @@ import { IMatch } from "../MatchCard/MatchCard-types"
 
 export interface IHeaderProps {
 	matchList?: IMatch[]
-	getStats?: () => void
+	getStats: () => IStats
 }
 
 export interface IStats {
