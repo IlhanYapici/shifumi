@@ -11,8 +11,11 @@ import { useNavigate } from "react-router-dom"
 
 import { useUserContext } from "../../context/UserContext/UserContext"
 import { ThemeButton } from "../ThemeButton/ThemeButton"
+import { IHeaderProps } from "./Header-types"
 
-export function Header() {
+export function Header(props: IHeaderProps) {
+	const { matchList } = props
+
 	const navigate = useNavigate()
 	const {
 		userContext: { username }
