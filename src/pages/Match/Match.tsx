@@ -56,8 +56,8 @@ export function Match() {
 				setMatchContext((prevState) => ({
 					...prevState,
 					players: {
-						"0": { score: scores.user1, username: user1.username },
-						"1": { score: scores.user2, username: user2.username }
+						user1: { score: scores.user1, username: user1.username },
+						user2: { score: scores.user2, username: user2.username }
 					},
 					currentTurn
 				}))

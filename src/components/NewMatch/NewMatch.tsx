@@ -24,8 +24,8 @@ export function NewMatch(props: INewMatchProps) {
 
 		await requestNewMatch({ token })
 
-		forceUpdate()
 		setTabIndex(0)
+		forceUpdate()
 		onClose()
 	}
 

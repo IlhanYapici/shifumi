@@ -26,6 +26,14 @@ import { BoxWithBgColor } from "../../../BoxWithBgColor/BoxWithBgColor"
 export function MatchStatus({ match }: { match: IMatch }) {
 	const navigate = useNavigate()
 
+	const textColors = useColorModeValue("black", "white")
+	const versusBgColors = useColorModeValue("gray.50", "gray.900")
+	const gridBgColors = useColorModeValue("gray.100", "gray.800")
+	const shadowColors = useColorModeValue(
+		"drop-shadow(0px 0px 10px #BFBFBF)",
+		"drop-shadow(0px 0px 10px #0A0A0A)"
+	)
+
 	const matchStatus: TMatchStatus = getMatchStatus({ match })
 	const scores = getScores({ turns: match.turns })
 
@@ -65,7 +73,7 @@ export function MatchStatus({ match }: { match: IMatch }) {
 					justifyItems="center"
 					alignItems="center"
 					w="100%"
-					backgroundColor={useColorModeValue("gray.100", "gray.800")}
+					backgroundColor={gridBgColors}
 					overflow="hidden"
 					borderRadius="0.6rem"
 				>
@@ -93,13 +101,10 @@ export function MatchStatus({ match }: { match: IMatch }) {
 									alignItems="center"
 									gap="1rem"
 									w="131px"
-									filter={useColorModeValue(
-										"drop-shadow(0px 0px 10px #BFBFBF)",
-										"drop-shadow(0px 0px 10px #0A0A0A)"
-									)}
+									filter={shadowColors}
 								>
-									<Text textTransform="uppercase" noOfLines={1}>
-										{match.user1.username}
+									<Text noOfLines={1}>
+										{match.user1.username.toUpperCase()}
 									</Text>
 									<Text fontSize="2rem">{scores.user1}</Text>
 								</Box>
@@ -109,18 +114,15 @@ export function MatchStatus({ match }: { match: IMatch }) {
 						<Spinner />
 					)}
 					<BoxWithBgColor
-						color={useColorModeValue("black", "white")}
+						color={textColors}
 						userSelect="none"
 						fontSize="2rem"
 						letterSpacing="1"
 						fontWeight="bold"
-						backgroundColor={useColorModeValue("gray.50", "gray.900")}
+						backgroundColor={versusBgColors}
 						borderRadius="0.6rem"
 						p="0.25rem 0.75rem"
-						filter={useColorModeValue(
-							"drop-shadow(0px 0px 10px #BFBFBF)",
-							"drop-shadow(0px 0px 10px #0A0A0A)"
-						)}
+						filter={shadowColors}
 					>
 						<Text>VS</Text>
 					</BoxWithBgColor>
@@ -148,14 +150,11 @@ export function MatchStatus({ match }: { match: IMatch }) {
 									alignItems="center"
 									gap="1rem"
 									w="131px"
-									filter={useColorModeValue(
-										"drop-shadow(0px 0px 10px #BFBFBF)",
-										"drop-shadow(0px -5px 10px #0A0A0A)"
-									)}
+									filter={shadowColors}
 								>
 									<Text fontSize="2rem">{scores.user2}</Text>
-									<Text textTransform="uppercase" noOfLines={1}>
-										{match.user2.username}
+									<Text noOfLines={1}>
+										{match.user2.username.toUpperCase()}
 									</Text>
 								</Box>
 							</Tooltip>

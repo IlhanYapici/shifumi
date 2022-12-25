@@ -159,6 +159,8 @@ export async function loginUser(params: ILoginParams) {
 export async function move(params: IMoveParams) {
 	const { token, matchId, turnId, move, resCallback, errCallback } = params
 
+	getMatch({ token, matchId })
+
 	const res = await axios
 		.post(
 			`${import.meta.env.VITE_API_URL}/matches/${matchId}/turns/${turnId}`,

@@ -30,16 +30,16 @@ export function handleEvents(params: IHandleEventsParams) {
 		case "TURN_ENDED":
 			const { winner, newTurnId } = event.payload
 			console.info(`Turn ${newTurnId - 1} ended.`)
-			updateScore(winner)
+			updateScore({ user: winner, newTurnId })
 			setControlsDisabled(false)
 			break
 		case "PLAYER1_MOVED":
-			if (getUsernameFromJWT(token) === matchContext.players[0].username) {
+			if (getUsernameFromJWT(token) === matchContext.players.user1.username) {
 				setControlsDisabled(true)
 			}
 			break
 		case "PLAYER2_MOVED":
-			if (getUsernameFromJWT(token) === matchContext.players[1].username) {
+			if (getUsernameFromJWT(token) === matchContext.players.user2.username) {
 				setControlsDisabled(true)
 			}
 			break
