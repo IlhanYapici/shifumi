@@ -1,10 +1,10 @@
 import { MessageEvent, EventSourcePolyfill } from "event-source-polyfill"
 import { NavigateFunction } from "react-router-dom"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch } from "react"
 
 import {
 	IMatchContextState,
-	IUpdateScoreParams
+	TMatchContextReducerActions
 } from "../../context/MatchContext/MatchContext-types"
 
 export interface IHandleEventsParams {
@@ -13,8 +13,7 @@ export interface IHandleEventsParams {
 	setControlsDisabled: (disabled: boolean) => void
 	token: string
 	matchContext: IMatchContextState
-	setMatchContext: Dispatch<SetStateAction<IMatchContextState>>
-	updateScore: (params: IUpdateScoreParams) => void
+	dispatchMatchCtx: Dispatch<TMatchContextReducerActions>
 	navigate: NavigateFunction
 }
 

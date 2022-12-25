@@ -17,7 +17,7 @@ import { DEFAULT_MATCH_STATE } from "./Match-constants"
 export function Match() {
 	const [matchState, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_STATE)
 
-	const { matchContext, setMatchContext, updateScore } = useMatchContext()
+	const { matchContext, dispatchMatchCtx } = useMatchContext()
 	const { matchId } = useParams()
 	const navigate = useNavigate()
 
@@ -33,7 +33,7 @@ export function Match() {
 				return
 			}
 
-			setMatchContext((prevState) => ({ ...prevState, matchId }))
+			dispatchMatchCtx({ type: "SET_MATCH_ID", payload: matchId })
 
 			const localToken = localStorage.getItem("token")
 
@@ -54,14 +54,33 @@ export function Match() {
 
 				const scores = getScores({ turns })
 
-				setMatchContext((prevState) => ({
-					...prevState,
-					players: {
-						user1: { score: scores.user1, username: user1!.username },
-						user2: { score: scores.user2, username: user2!.username }
-					},
-					currentTurn
-				}))
+				dispatchMatchCtx({
+					type: "SET_USER",
+					user: "user1",
+					field: "username",
+					payload: user1!.username
+				})
+				dispatchMatchCtx({
+					type: "SET_USER",
+					user: "user2",
+					field: "username",
+					payload: user2!.username
+				})
+
+				dispatchMatchCtx({
+					type: "SET_USER",
+					user: "user1",
+					field: "score",
+					payload: scores.user1
+				})
+				dispatchMatchCtx({
+					type: "SET_USER",
+					user: "user2",
+					field: "score",
+					payload: scores.user2
+				})
+
+				dispatchMatchCtx({ type: "SET_CURRENT_TURN", payload: currentTurn })
 			}
 
 			await getMatch({ matchId: matchId, token: localToken, resCallback })
@@ -95,8 +114,7 @@ export function Match() {
 				setControlsDisabled: (disabled: boolean) =>
 					dispatch({ type: "SET_CONTROLS_DISABLED", payload: disabled }),
 				matchContext,
-				setMatchContext,
-				updateScore,
+				dispatchMatchCtx,
 				navigate
 			})
 

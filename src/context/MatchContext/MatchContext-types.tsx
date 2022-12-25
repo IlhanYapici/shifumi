@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, Dispatch } from "react"
 
 export interface IMatchProviderProps {
 	children: ReactNode
@@ -6,8 +6,12 @@ export interface IMatchProviderProps {
 
 export interface IMatchContext {
 	matchContext: IMatchContextState
-	setMatchContext: React.Dispatch<React.SetStateAction<IMatchContextState>>
-	updateScore: (params: IUpdateScoreParams) => void
+	dispatchMatchCtx: Dispatch<TMatchContextReducerActions>
+}
+
+export interface IUpdateScoreParams {
+	user: "user1" | "user2"
+	newTurnId: number
 }
 
 export interface IMatchContextState {
@@ -25,7 +29,28 @@ export interface IMatchContextState {
 	}
 }
 
-export interface IUpdateScoreParams {
-	user: "user1" | "user2"
-	newTurnId: number
-}
+// export interface IMatchContextReducerActions {
+// 	type: "SET_MATCH_ID" | "SET_CURRENT_TURN" | "SET_USER"
+// }
+
+export type TMatchContextReducerActions =
+	| {
+			type: "SET_MATCH_ID"
+			payload: string
+	  }
+	| {
+			type: "SET_CURRENT_TURN"
+			payload: number
+	  }
+	| {
+			type: "SET_USER"
+			user: "user1" | "user2"
+			field: "username"
+			payload: string
+	  }
+	| {
+			type: "SET_USER"
+			user: "user1" | "user2"
+			field: "score"
+			payload?: number
+	  }

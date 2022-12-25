@@ -37,8 +37,7 @@ export function handleEvents(params: IHandleEventsParams) {
 		setControlsDisabled,
 		token,
 		matchContext,
-		setMatchContext,
-		updateScore,
+		dispatchMatchCtx,
 		navigate
 	} = params
 
@@ -49,17 +48,13 @@ export function handleEvents(params: IHandleEventsParams) {
 	}
 
 	switch (event.type) {
-		case "NEW_TURN":
-			console.info(`New turn: ${event.payload.turnId}`)
-			setMatchContext((prevState) => ({
-				...prevState,
-				currentTurn: event.payload.turnId
-			}))
-			break
 		case "TURN_ENDED":
 			const { winner, newTurnId } = event.payload
 			console.info(`Turn ${newTurnId - 1} ended.`)
-			updateScore({ user: winner, newTurnId })
+
+			dispatchMatchCtx({ type: "SET_CURRENT_TURN", payload: newTurnId })
+			dispatchMatchCtx({ type: "SET_USER", user: winner, field: "score" })
+
 			setControlsDisabled(false)
 			break
 		case "PLAYER1_MOVED":

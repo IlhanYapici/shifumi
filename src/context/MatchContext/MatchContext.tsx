@@ -1,45 +1,35 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useMemo, useReducer } from "react"
 
 import {
 	IMatchProviderProps,
-	IMatchContextState,
 	IMatchContext,
 	IUpdateScoreParams
 } from "./MatchContext-types"
+import { matchContextReducer } from "./MatchContext-utils"
+import { DEFAULT_MATCH_CONTEXT } from "./MatchContext-constants"
 
 export const MatchContext = createContext({} as IMatchContext)
 
 export function MatchProvider({ children }: IMatchProviderProps) {
-	const [matchContext, setMatchContext] = useState<IMatchContextState>({
-		matchId: null,
-		currentTurn: 1,
-		players: {
-			user1: { username: "", score: 0 },
-			user2: { username: "", score: 0 }
-		}
-	})
+	const [matchContext, dispatchMatchCtx] = useReducer(
+		matchContextReducer,
+		DEFAULT_MATCH_CONTEXT
+	)
 
 	const updateScore = (params: IUpdateScoreParams) => {
 		const { user, newTurnId } = params
 
-		setMatchContext((prevState) => ({
-			...prevState,
-			currentTurn: newTurnId,
-			players: {
-				...prevState.players,
-				[user]: {
-					...prevState.players[user],
-					score: prevState.players[user].score + 1
-				}
-			}
-		}))
+		dispatchMatchCtx({ type: "SET_CURRENT_TURN", payload: newTurnId })
+		dispatchMatchCtx({ type: "SET_USER", user, field: "score" })
 	}
 
-	const ctx: IMatchContext = {
-		matchContext,
-		setMatchContext,
-		updateScore
-	}
+	const ctx: IMatchContext = useMemo(
+		() => ({
+			matchContext,
+			dispatchMatchCtx
+		}),
+		[matchContext, dispatchMatchCtx]
+	)
 
 	return <MatchContext.Provider value={ctx}>{children}</MatchContext.Provider>
 }
