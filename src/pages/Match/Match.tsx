@@ -3,21 +3,23 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useReducer } from "react"
 import { motion } from "framer-motion"
 
+import { AnimatedEventsContainer } from "./_components/AnimatedEventsContainer/AnimatedEventsContainer"
 import { useMatchContext } from "../../context/MatchContext/MatchContext"
+import { useUserContext } from "../../context/UserContext/UserContext"
+import { getScores, getUserNumber } from "../../utils/misc/misc"
+import { handleEvents, matchReducer } from "./Match-utils"
 import { ScoreBar } from "./_components/ScoreBar/ScoreBar"
 import { Controls } from "./_components/Controls/Controls"
-import { getMatch } from "../../utils/api/api"
-import { getScores } from "../../utils/misc/misc"
-import { Loading } from "./_components/Loading/Loading"
-import { handleEvents, matchReducer } from "./Match-utils"
-import { AnimatedEventsContainer } from "./_components/AnimatedEventsContainer/AnimatedEventsContainer"
-import { IMatch } from "../../components"
 import { DEFAULT_MATCH_STATE } from "./Match-constants"
+import { Loading } from "./_components/Loading/Loading"
+import { getMatch } from "../../utils/api/api"
+import { IMatch } from "../../components"
 
 export function Match() {
 	const [matchState, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_STATE)
 
 	const { matchContext, dispatchMatchCtx } = useMatchContext()
+	const { userContext } = useUserContext()
 	const { matchId } = useParams()
 	const navigate = useNavigate()
 
@@ -50,10 +52,13 @@ export function Match() {
 					dispatch({ type: "SET_CONTROLS_DISABLED", payload: true })
 				}
 
+				const userNumber = getUserNumber(userContext.username, match)
+
 				const currentTurn = turns.length > 0 ? getCurrentTurn(turns) : 1
 
 				const scores = getScores({ turns })
 
+				dispatchMatchCtx({ type: "SET_USER_NUMBER", payload: userNumber })
 				dispatchMatchCtx({
 					type: "SET_USER",
 					user: "user1",
@@ -110,10 +115,12 @@ export function Match() {
 			handleEvents({
 				events,
 				sse,
+				matchId: matchId!,
 				token: matchState.token!,
 				setControlsDisabled: (disabled: boolean) =>
 					dispatch({ type: "SET_CONTROLS_DISABLED", payload: disabled }),
 				matchContext,
+				dispatchMatchState: dispatch,
 				dispatchMatchCtx,
 				navigate
 			})
@@ -146,7 +153,12 @@ export function Match() {
 					exit={{ opacity: 0 }}
 				>
 					<ScoreBar />
-					{/* {eventSource && <AnimatedEventsContainer />} */}
+					{matchState.displayAnimations && (
+						<AnimatedEventsContainer
+							matchState={matchState}
+							dispatchMatchState={dispatch}
+						/>
+					)}
 					<Controls disabled={matchState.controlsDisabled} />
 				</motion.div>
 			)}

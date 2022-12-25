@@ -1,5 +1,8 @@
-import { EventSourcePolyfill } from "event-source-polyfill"
+import { Dispatch } from "react"
+
+import { IMatchState, TMatchReducerActions } from "../../Match-types"
 
 export interface IAnimatedEventsContainerProps {
-	sse: EventSourcePolyfill
+	matchState: IMatchState
+	dispatchMatchState: Dispatch<TMatchReducerActions>
 }

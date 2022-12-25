@@ -1,15 +1,15 @@
+import { Variants, motion } from "framer-motion"
+import { useParams } from "react-router-dom"
 import { Divider } from "@chakra-ui/react"
 import {
 	FaHandRock as RockIcon,
 	FaHandPaper as PaperIcon,
 	FaHandScissors as ScissorsIcon
 } from "react-icons/fa"
-import { Variants, motion } from "framer-motion"
 
 import { move } from "../../../../utils/api/api"
 import { useMatchContext } from "../../../../context/MatchContext/MatchContext"
 import { ActionButton } from "../../../../components/ActionButton/ActionButton"
-import { useParams } from "react-router-dom"
 
 import "./Controls-styles.css"
 

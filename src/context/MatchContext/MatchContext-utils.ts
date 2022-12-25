@@ -41,5 +41,10 @@ export function matchContextReducer(
 					}
 				}
 			} as IMatchContextState
+		case "SET_USER_NUMBER":
+			return {
+				...state,
+				userNumber: action.payload
+			} as IMatchContextState
 	}
 }

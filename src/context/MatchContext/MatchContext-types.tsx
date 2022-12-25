@@ -9,14 +9,10 @@ export interface IMatchContext {
 	dispatchMatchCtx: Dispatch<TMatchContextReducerActions>
 }
 
-export interface IUpdateScoreParams {
-	user: "user1" | "user2"
-	newTurnId: number
-}
-
 export interface IMatchContextState {
 	matchId: string | null
 	currentTurn: number
+	userNumber: "user1" | "user2" | null
 	players: {
 		user1: {
 			username: string
@@ -53,4 +49,8 @@ export type TMatchContextReducerActions =
 			user: "user1" | "user2"
 			field: "score"
 			payload?: number
+	  }
+	| {
+			type: "SET_USER_NUMBER"
+			payload: "user1" | "user2"
 	  }

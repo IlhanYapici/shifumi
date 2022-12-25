@@ -13,7 +13,7 @@ import { requestNewMatch } from "../../utils/api/api"
 import { INewMatchProps } from "./NewMatch-types"
 
 export function NewMatch(props: INewMatchProps) {
-	const { forceUpdate, setTabIndex } = props
+	const { setTabIndex, setUpdater } = props
 	const { isOpen, onOpen, onClose } = useDisclosure()
 
 	const newMatch = async () => {
@@ -24,8 +24,11 @@ export function NewMatch(props: INewMatchProps) {
 
 		await requestNewMatch({ token })
 
+		setUpdater((prevState) => {
+			return !prevState
+		})
+
 		setTabIndex(0)
-		forceUpdate()
 		onClose()
 	}
 

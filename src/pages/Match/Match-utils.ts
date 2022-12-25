@@ -1,3 +1,5 @@
+import { IMatch } from "../../components"
+import { getMatch } from "../../utils/api/api"
 import { getUsernameFromJWT } from "../../utils/jwt/jwt"
 import {
 	IHandleEventsParams,
@@ -17,6 +19,11 @@ export function matchReducer(state: IMatchState, action: TMatchReducerActions) {
 				...state,
 				controlsDisabled: action.payload
 			} as IMatchState
+		case "SET_DISPLAY_ANIMATIONS":
+			return {
+				...state,
+				displayAnimations: action.payload
+			} as IMatchState
 		case "SET_TOKEN":
 			return {
 				...state,
@@ -25,18 +32,20 @@ export function matchReducer(state: IMatchState, action: TMatchReducerActions) {
 		case "SET_PLAYER_MOVE":
 			return {
 				...state,
-				[action.player]: action.payload
+				[action.user]: action.payload
 			} as IMatchState
 	}
 }
 
-export function handleEvents(params: IHandleEventsParams) {
+export async function handleEvents(params: IHandleEventsParams) {
 	const {
 		events,
 		sse,
 		setControlsDisabled,
+		matchId,
 		token,
 		matchContext,
+		dispatchMatchState,
 		dispatchMatchCtx,
 		navigate
 	} = params
@@ -51,6 +60,26 @@ export function handleEvents(params: IHandleEventsParams) {
 		case "TURN_ENDED":
 			const { winner, newTurnId } = event.payload
 			console.info(`Turn ${newTurnId - 1} ended.`)
+
+			await getMatch({
+				matchId,
+				token,
+				resCallback: (match: IMatch) => {
+					dispatchMatchState({
+						type: "SET_PLAYER_MOVE",
+						user: "user1",
+						payload: match.turns[match.turns.length - 1].user1
+					})
+
+					dispatchMatchState({
+						type: "SET_PLAYER_MOVE",
+						user: "user2",
+						payload: match.turns[match.turns.length - 1].user2
+					})
+
+					dispatchMatchState({ type: "SET_DISPLAY_ANIMATIONS", payload: true })
+				}
+			})
 
 			dispatchMatchCtx({ type: "SET_CURRENT_TURN", payload: newTurnId })
 			dispatchMatchCtx({ type: "SET_USER", user: winner, field: "score" })

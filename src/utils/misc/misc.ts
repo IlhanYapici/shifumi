@@ -15,6 +15,7 @@ import {
 	SLIDE_RIGHT_VARIANT,
 	SLIDE_UP_VARIANT
 } from "./misc-constants"
+import { IMatch } from "../../components"
 
 export function getScores(params: IGetScoresParams) {
 	const { turns } = params
@@ -52,6 +53,12 @@ export function getMatchStatus(
 	} else {
 		return "open"
 	}
+}
+
+export function getUserNumber(username: string, match: IMatch) {
+	if (username === match.user1?.username) {
+		return "user1"
+	} else return "user2"
 }
 
 export function capitalize(str: string) {

@@ -1,4 +1,6 @@
+import { Dispatch } from "react"
+
 export interface INewMatchProps {
-	forceUpdate: () => void
+	setUpdater: Dispatch<React.SetStateAction<boolean>>
 	setTabIndex: (index: number) => void
 }

@@ -1,9 +1,9 @@
 import { Tabs, Tab, TabList, TabPanels, TabPanel } from "@chakra-ui/react"
-import { useEffect, useReducer, useCallback } from "react"
+import { useEffect, useReducer, useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 
-import { getMatchStatus, useForceUpdate } from "../../utils/misc/misc"
+import { getMatchStatus } from "../../utils/misc/misc"
 import { IMatch, NewMatch, NotFound } from "../../components"
 import Header from "../../components/Header/Header"
 import { getMatchList } from "../../utils/api/api"
@@ -16,7 +16,7 @@ import { useUserContext } from "../../context/UserContext/UserContext"
 export function MatchList() {
 	const { userContext } = useUserContext()
 	const navigate = useNavigate()
-	const forceUpdate = useForceUpdate()
+	const [updater, setUpdater] = useState<boolean>(true)
 	const [matchListState, dispatch] = useReducer(
 		matchListReducer,
 		DEFAULT_MATCH_LIST_STATE
@@ -91,7 +91,7 @@ export function MatchList() {
 			const controller = new AbortController()
 			controller.abort()
 		}
-	}, [])
+	}, [updater])
 
 	return (
 		<motion.div
@@ -103,10 +103,10 @@ export function MatchList() {
 			<Header getStats={getStats} />
 			<NewMatch
 				key="join-match-button"
+				setUpdater={setUpdater}
 				setTabIndex={(index) =>
 					dispatch({ type: "SET_TAB_INDEX", payload: index })
 				}
-				forceUpdate={forceUpdate}
 			/>
 			<Tabs
 				index={matchListState.tabIndex}

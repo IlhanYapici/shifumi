@@ -1,12 +1,8 @@
 import { createContext, useContext, useMemo, useReducer } from "react"
 
-import {
-	IMatchProviderProps,
-	IMatchContext,
-	IUpdateScoreParams
-} from "./MatchContext-types"
-import { matchContextReducer } from "./MatchContext-utils"
+import { IMatchProviderProps, IMatchContext } from "./MatchContext-types"
 import { DEFAULT_MATCH_CONTEXT } from "./MatchContext-constants"
+import { matchContextReducer } from "./MatchContext-utils"
 
 export const MatchContext = createContext({} as IMatchContext)
 

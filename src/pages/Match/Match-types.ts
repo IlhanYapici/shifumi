@@ -11,8 +11,10 @@ export interface IHandleEventsParams {
 	events: MessageEvent
 	sse: EventSourcePolyfill
 	setControlsDisabled: (disabled: boolean) => void
+	matchId: string
 	token: string
 	matchContext: IMatchContextState
+	dispatchMatchState: Dispatch<TMatchReducerActions>
 	dispatchMatchCtx: Dispatch<TMatchContextReducerActions>
 	navigate: NavigateFunction
 }
@@ -22,14 +24,15 @@ type TMove = "rock" | "paper" | "scissors"
 export interface IMatchState {
 	loading: boolean
 	controlsDisabled: boolean
+	displayAnimations: boolean
 	token: string | null
-	player1: TMove | null
-	player2: TMove | null
+	user1: TMove | null
+	user2: TMove | null
 }
 
 export type TMatchReducerActions =
 	| {
-			type: "SET_LOADING" | "SET_CONTROLS_DISABLED"
+			type: "SET_LOADING" | "SET_CONTROLS_DISABLED" | "SET_DISPLAY_ANIMATIONS"
 			payload: boolean
 	  }
 	| {
@@ -38,6 +41,6 @@ export type TMatchReducerActions =
 	  }
 	| {
 			type: "SET_PLAYER_MOVE"
-			player: "player1" | "player2"
+			user: "user1" | "user2"
 			payload: TMove
 	  }
