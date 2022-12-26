@@ -38,7 +38,7 @@ export function getHistoryBody(turns: ITurn[]) {
 				display="flex"
 				backgroundColor={
 					turn.winner === "user1"
-						? "orange.500"
+						? "whatsapp.500"
 						: useColorModeValue("gray.100", "gray.800")
 				}
 				justifySelf="flex-start"
