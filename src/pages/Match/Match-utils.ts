@@ -103,9 +103,12 @@ export async function handleEvents(params: IHandleEventsParams) {
 			break
 		case "MATCH_ENDED":
 			setControlsDisabled(true)
-			dispatchMatchState({ type: "SET_MATCH_ENDED", payload: true })
+
+			const t = setTimeout(() => {
+				dispatchMatchState({ type: "SET_MATCH_ENDED", payload: true })
+			}, 2000)
 
 			sse.close()
-			break
+			return () => clearTimeout(t)
 	}
 }
