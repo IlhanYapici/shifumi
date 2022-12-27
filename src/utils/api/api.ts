@@ -8,12 +8,13 @@ import {
 	IRegisterParams,
 	IRequestMatchParams
 } from "./api-types"
+import { API_URL } from "../constants"
 
 export async function getMatch(params: IGetMatchParams) {
 	const { matchId, token, resCallback, errCallback } = params
 
 	const res = await axios
-		.get(`${import.meta.env.VITE_API_URL}/matches/${matchId}`, {
+		.get(`${API_URL}/matches/${matchId}`, {
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
@@ -42,7 +43,7 @@ export async function getMatchList(params: IGetMatchListParams) {
 	const { token, resCallback, errCallback } = params
 
 	const res = await axios
-		.get(`${import.meta.env.VITE_API_URL}/matches`, {
+		.get(`${API_URL}/matches`, {
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
@@ -72,7 +73,7 @@ export async function requestNewMatch(params: IRequestMatchParams) {
 
 	const res = await axios
 		.post(
-			`${import.meta.env.VITE_API_URL}/matches`,
+			`${API_URL}/matches`,
 			{},
 			{
 				headers: {
@@ -104,7 +105,7 @@ export async function registerUser(params: IRegisterParams) {
 	const { username, password, resCallback, errCallback } = params
 
 	const res = await axios
-		.post(`${import.meta.env.VITE_API_URL}/register`, {
+		.post(`${API_URL}/register`, {
 			username,
 			password
 		})
@@ -132,7 +133,7 @@ export async function loginUser(params: ILoginParams) {
 	const { username, password, resCallback, errCallback } = params
 
 	const res = await axios
-		.post(`${import.meta.env.VITE_API_URL}/login`, {
+		.post(`${API_URL}/login`, {
 			username,
 			password
 		})
@@ -163,7 +164,7 @@ export async function move(params: IMoveParams) {
 
 	const res = await axios
 		.post(
-			`${import.meta.env.VITE_API_URL}/matches/${matchId}/turns/${turnId}`,
+			`${API_URL}/matches/${matchId}/turns/${turnId}`,
 			{ move },
 			{
 				headers: {

@@ -15,6 +15,7 @@ import { Loading } from "./_components/Loading/Loading"
 import { getMatch } from "../../utils/api/api"
 import { IMatch } from "../../components"
 import { MatchEndedOverlay } from "./_components/MatchEndedOverlay/MatchEndedOverlay"
+import { API_URL } from "../../utils/constants"
 
 export function Match() {
 	const [matchState, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_STATE)
@@ -104,7 +105,7 @@ export function Match() {
 		if (matchState.token === null) return
 
 		const sse = new EventSourcePolyfill(
-			`${import.meta.env.VITE_API_URL}/matches/${matchId}/subscribe`,
+			`${API_URL}/matches/${matchId}/subscribe`,
 			{
 				headers: { Authorization: `Bearer ${matchState.token}` },
 				heartbeatTimeout: 600000
